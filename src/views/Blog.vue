@@ -1,3 +1,8 @@
+<style lang="scss">
+    .has-text-grape {
+        color: #7957d5
+    }
+</style>
 <template>
     <div class="container is-widescreen">
         <div class="tile is-ancestor is-vertical" style="background: url('http://img.codelinn.com/map.png') no-repeat center center;">
@@ -14,6 +19,10 @@
                         </template>
                     </b-navbar>
                 </div>
+            </div>
+
+
+            <div class="section">
             </div>
             <div class="tile is-parent has-text-centered">
                 <div class="tile is-child">
@@ -38,6 +47,7 @@
             <div class="section">
                 <hr/>
             </div>
+
             <div class="tile is-parent is-vertical">
                 <div class="tile is-child has-text-left">
                     <span class="title is-large">评论区</span>
@@ -45,62 +55,57 @@
                 <div class="tile is-child">
                     <article class="media">
                         <figure class="media-left">
-                            <p class="image is-64x64 " >
-                                <img src="https://lqzhgood.github.io/bulma-docs-cn/images/placeholders/128x128.png">
+                            <p class="image is-48x48 " >
+                                <img class="is-rounded" src="http://img.codelinn.com//random/header23.png">
                             </p>
                         </figure>
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong>Barbara Middleton</strong>
+                                    <strong class="has-text-grape">小喜子</strong>
                                     <br>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
+                                    頑張れってください
                                     <br>
-                                    <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
+                                    <br>
+                                    <small><a>Reply</a> · 3 hrs</small>
                                 </p>
                             </div>
 
                             <article class="media">
                                 <figure class="media-left">
-                                    <p class="image is-48x48">
-                                        <img src="https://lqzhgood.github.io/bulma-docs-cn/images/placeholders/96x96.png">
+                                    <p class="image is-32x32">
+                                        <img class="is-rounded" src="http://img.codelinn.com//random/header21.png">
                                     </p>
                                 </figure>
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Sean Brown</strong>
+                                            <strong class="has-text-grape">Linfeng Cai</strong>
                                             <br>
-                                            Donec sollicitudin urna eget eros malesuada sagittis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam blandit nisl a nulla sagittis, a lobortis leo feugiat.
+                                            はい
                                             <br>
-                                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
+                                            <br>
+                                            <small><a>Reply</a> · 2 hrs</small>
                                         </p>
                                     </div>
-
-                                    <article class="media">
-                                        Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus ullamcorper sit amet nec massa.
-                                    </article>
-
-                                    <article class="media">
-                                        Morbi vitae diam et purus tincidunt porttitor vel vitae augue. Praesent malesuada metus sed pharetra euismod. Cras tellus odio, tincidunt iaculis diam non, porta aliquet tortor.
-                                    </article>
                                 </div>
                             </article>
 
                             <article class="media">
                                 <figure class="media-left">
-                                    <p class="image is-48x48">
-                                        <img src="https://lqzhgood.github.io/bulma-docs-cn/images/placeholders/96x96.png">
+                                    <p class="image is-32x32">
+                                        <img class="is-rounded" src="http://img.codelinn.com//random/header23.png">
                                     </p>
                                 </figure>
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Kayli Eunice </strong>
+                                            <strong class="has-text-grape">小喜子</strong>
                                             <br>
-                                            Sed convallis scelerisque mauris, non pulvinar nunc mattis vel. Maecenas varius felis sit amet magna vestibulum euismod malesuada cursus libero. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus lacinia non nisl id feugiat.
+                                            一緒に
                                             <br>
-                                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
+                                            <br>
+                                            <small><a>Reply</a> · 2 hrs</small>
                                         </p>
                                     </div>
                                 </div>
@@ -110,7 +115,7 @@
                     <article class="media">
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img src="https://lqzhgood.github.io/bulma-docs-cn/images/placeholders/128x128.png">
+                                <img class="is-rounded" src="http://img.codelinn.com//random/header5.png">
                             </p>
                         </figure>
                         <div class="media-content">

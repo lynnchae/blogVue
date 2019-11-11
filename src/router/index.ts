@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../components/Index.vue'
-import blog from '../components/Blog.vue'
-import about from '../components/About.vue'
+import index from '../views/Index.vue'
+import blog from '../views/Blog.vue'
+import about from '../views/About.vue'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
