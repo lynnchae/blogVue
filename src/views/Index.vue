@@ -28,7 +28,7 @@
   <div class="container">
     <div class="tile is-ancestor">
       <div class="tile is-parent">
-        <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow="true" spaced="true">
+        <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow spaced >
           <template slot="brand">
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
               <img src="http://img.codelinn.com/logo.png"/>
