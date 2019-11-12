@@ -28,7 +28,7 @@
   <div class="container">
     <div class="tile is-ancestor">
       <div class="tile is-parent">
-        <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow spaced >
+        <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow >
           <template slot="brand">
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
               <img src="http://img.codelinn.com/logo.png"/>
@@ -57,7 +57,7 @@
     <div class="tile is-ancestor">
       <div class="tile is-vertical">
         <div class="tile">
-          <div class="container tile is-parent swiper" >
+          <div class="container tile is-parent swiper" style="padding-top: 50px;" >
               <swiper :options="swiperOption" class="container is-widescreen is-mobile tile is-child">
                 <swiper-slide v-for="item in imgList" :key="item.id">
                   <figure class="image" >
@@ -81,7 +81,7 @@
                   <p><b-tag type="is-info">实战</b-tag></p>
                 </div>
                 <div class="tile is-child">
-                  <a class="title " href="/b/集群Master-Unique工作节点的设计">集群Master-Unique工作节点的设计</a>
+                  <a class="title " href="#/b/集群Master-Unique工作节点的设计">集群Master-Unique工作节点的设计</a>
                 </div>
               </div>
               <div class="tile is-child content">
@@ -97,7 +97,7 @@
                   <b-tag type="is-info">公告</b-tag>
                 </div>
                 <div class="tile is-child">
-                  <a class="title " href="/b/Warning--本站数据被黑">Warning--本站数据被黑</a>
+                  <a class="title " href="#/b/Warning--本站数据被黑">Warning--本站数据被黑</a>
                 </div>
               </div>
               <div class="tile is-child content">
@@ -113,7 +113,7 @@
                   <b-tag type="is-info">介绍</b-tag>
                 </div>
                 <div class="tile is-child">
-                  <a class="title " href="/b/Cmd Markdown编辑阅读器预览">Cmd Markdown编辑阅读器预览</a>
+                  <a class="title " href="#/b/Cmd Markdown编辑阅读器预览">Cmd Markdown编辑阅读器预览</a>
                 </div>
               </div>
               <div class="tile is-child">
@@ -180,6 +180,7 @@ export default {
   },
   data () {
     return {
+      id: 1,
       swiperOption: {
         effect: 'fade',
         pagination: {
