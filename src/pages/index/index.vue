@@ -41,7 +41,7 @@
                 Home
               </b-navbar-item>
               <b-navbar-dropdown hoverable label="Info">
-                <b-navbar-item href="#/about">
+                <b-navbar-item href="about.html">
                   About
                 </b-navbar-item>
                 <b-navbar-item href="#">

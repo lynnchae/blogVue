@@ -1,33 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../views/Index.vue'
-import blog from '../views/Blog.vue'
-import about from '../views/About.vue'
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-// internal icons
-import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
-  faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
-  faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
-    faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
-    faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload);
-Vue.component('vue-fontawesome', FontAwesomeIcon);
+import index from '../pages/index/index.vue'
+import blog from '../pages/blog/blog.vue'
+import about from '../pages/about/about.vue'
 
 Vue.use(VueRouter)
-Vue.use(Buefy,{
-  defaultIconComponent: 'vue-fontawesome',
-  defaultIconPack: 'fas',
-})
+
 
 const routes = [
   {
     path: '/',
-    name: 'main',
+    name: 'index',
     component: index
   },{
     path: '/b/:title',
@@ -49,7 +32,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
