@@ -15,6 +15,10 @@ import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamat
   faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
   faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload } from "@fortawesome/free-solid-svg-icons";
 
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+Vue.use(VueAxios,axios);
+
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown,
     faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload);
@@ -30,6 +34,9 @@ Vue.use(Buefy,{
 })
 
 Vue.config.productionTip = false
+Vue.prototype.toPage = function(page: string, param? : {}){
+  this.$router.push({name: page, params:param})
+}
 
 new Vue({
   router,

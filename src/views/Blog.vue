@@ -2,30 +2,39 @@
     .has-text-grape {
         color: #7957d5
     }
+    .margin-0-50 {
+        margin: 0px 50px;
+    }
+    .span-align-middle {
+        vertical-align: middle!important;
+    }
 </style>
 <template>
     <div class="container is-widescreen">
-        <div class="tile is-ancestor is-vertical" style="background: url('http://img.codelinn.com/map.png') no-repeat center center;">
+        <div class="tile is-ancestor is-vertical" style="background: url('https://pic.codelinn.com/map.png') no-repeat center center;">
             <div class="tile is-parent">
                 <div class="tile is-child">
                     <b-navbar class=" navbar is-fixed-top" >
+                        <template slot="brand">
+                            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                                <img src="https://pic.codelinn.com/logo.png"/>
+                            </b-navbar-item>
+                        </template>
                         <template slot="start">
                             <div class="field is-grouped">
-                                <b-navbar-item href="/" >
-                                    <b-icon pack="fas" icon="angle-double-left"></b-icon>
-                                    <span>Home</span>
+                                <b-navbar-item @click="toPage('index')" >
+                                    <b-icon class="span-align-middle" pack="fas" icon="angle-double-left"></b-icon>
+                                    <span class="span-align-middle">Home</span>
                                 </b-navbar-item>
                             </div>
                         </template>
                     </b-navbar>
                 </div>
             </div>
-
-
             <div class="section">
             </div>
-            <div class="tile is-parent has-text-centered">
-                <div class="tile is-child">
+            <div class="tile is-parent has-text-centered margin-0-50">
+                <div class="tile is-child ">
                     <span class="title is-large">
                     {{title}}
                     </span>
@@ -33,13 +42,8 @@
             </div>
             <div class="tile is-parent is-vertical has-text-left">
                 <div class="tile is-child content">
-                    <div id="blog-main-content" class="md-content"><h3 id="warning">Warning</h3>
-                        <p>最近github仓库被黑客攻击，导致大部分repo被黑，黑客需要0.1 BTC作为赎金，而本站也在受害者名单中！以下为黑客留言</p>
-                        <blockquote>
-                            <p>To recover your lost Database and avoid leaking it: Send us 0.1 Bitcoin (BTC) to our Bitcoin address 143RTPNZEbLMTPagX72jA2QxL5z7EyLshu and contact us by Email with your Server IP or Domain name and a Proof of Payment. If you are unsure if we have your data, contact us and we will send you a proof. Your Database is downloaded and backed up on our servers. Backups that we have right now: lynn . If we dont receive your payment in the next 10 Days, we will make your database public or use them otherwise.</p>
-                        </blockquote>
-                        <p>博客数据相对来说重要性可能不是那么高，但这次事件也警醒自己要时常做数据的备份，以及提高安全意识。</p>
-                        <p>博客数据正尝试恢复中...但恢复的可能性应该不大了</p>
+                    <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
+                        <div v-html="content"></div>
                     </div>
                 </div>
             </div>
@@ -48,64 +52,44 @@
                 <hr/>
             </div>
 
-            <div class="tile is-parent is-vertical">
+            <div class="tile is-parent is-vertical margin-0-50" >
                 <div class="tile is-child has-text-left">
                     <span class="title is-large">评论区</span>
                 </div>
                 <div class="tile is-child">
-                    <article class="media">
+                    <article class="media" v-for="item in comments" :key="item.id">
                         <figure class="media-left">
                             <p class="image is-48x48 " >
-                                <img class="is-rounded" src="http://img.codelinn.com//random/header23.png">
+                                <img class="is-rounded" :src="item.avatar">
                             </p>
                         </figure>
                         <div class="media-content">
                             <div class="content">
                                 <p>
-                                    <strong class="has-text-grape">小喜子</strong>
+                                    <strong class="has-text-grape">{{item.commenter}}</strong>
                                     <br>
-                                    頑張れってください
+                                    {{item.comment}}
                                     <br>
                                     <br>
-                                    <small><a>Reply</a> · 3 hrs</small>
+                                    <small><a>Reply</a> · {{item.createTime}}</small>
                                 </p>
                             </div>
 
-                            <article class="media">
+                            <article class="media " v-for="c in item.comments" :key="c.id">
                                 <figure class="media-left">
                                     <p class="image is-32x32">
-                                        <img class="is-rounded" src="http://img.codelinn.com//random/header21.png">
+                                        <img class="is-rounded" :src="c.avatar">
                                     </p>
                                 </figure>
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong class="has-text-grape">Linfeng Cai</strong>
+                                            <strong class="has-text-grape">{{c.commenter}}</strong>
                                             <br>
-                                            はい
-                                            <br>
-                                            <br>
-                                            <small><a>Reply</a> · 2 hrs</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="media">
-                                <figure class="media-left">
-                                    <p class="image is-32x32">
-                                        <img class="is-rounded" src="http://img.codelinn.com//random/header23.png">
-                                    </p>
-                                </figure>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <strong class="has-text-grape">小喜子</strong>
-                                            <br>
-                                            一緒に
+                                            {{c.comment}}
                                             <br>
                                             <br>
-                                            <small><a>Reply</a> · 2 hrs</small>
+                                            <small><a>Reply</a> · {{c.createTime}}</small>
                                         </p>
                                     </div>
                                 </div>
@@ -115,7 +99,7 @@
                     <article class="media">
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img class="is-rounded" src="http://img.codelinn.com//random/header5.png">
+                                <img class="is-rounded" src="https://pic.codelinn.com//random/header5.png">
                             </p>
                         </figure>
                         <div class="media-content">
@@ -132,10 +116,7 @@
                         </div>
                     </article>
                 </div>
-
             </div>
-
-
         </div>
     </div>
 </template>
@@ -143,8 +124,41 @@
 export default {
     data(){
         return {
-            title: this.$route.params.title
+            id: this.$route.params.id,
+            title: '',
+            content: '',
+            comments: []
         };
+    },
+    created() {
+        sessionStorage.setItem(this.id,this.id)
+        this.getBlog()
+    },
+    methods: {
+        getBlog(){
+            let id = 0;
+            if(this.$route.params.id){
+                id = this.$route.params.id
+            }else{
+                id = sessionStorage.getItem(this.id)
+            }
+            this.axios.get('/api/blog/gBlog?id='+id).then(res => {
+                window.console.info(res)
+                if(res.data.code){
+                    this.$buefy.notification.open({
+                        message: '没有找到相关文章！',
+                        type: 'is-warning'
+                    })
+                }else {
+                    this.title = res.data.title
+                    this.content = res.data.content
+                    if(res.data.comments){
+                        this.comments = res.data.comments
+                    }
+                }
+
+            })
+        }
     }
 }
 </script>

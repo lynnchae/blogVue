@@ -31,7 +31,7 @@
         <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow >
           <template slot="brand">
             <b-navbar-item tag="router-link" :to="{ path: '/' }">
-              <img src="http://img.codelinn.com/logo.png"/>
+              <img src="https://pic.codelinn.com/logo.png"/>
             </b-navbar-item>
           </template>
           <template slot="start">
@@ -41,7 +41,7 @@
                 Home
               </b-navbar-item>
               <b-navbar-dropdown hoverable label="Info">
-                <b-navbar-item href="#/about">
+                <b-navbar-item @click="toPage('about')">
                   About
                 </b-navbar-item>
                 <b-navbar-item href="#">
@@ -73,50 +73,18 @@
     <div class="tile is-ancestor columns">
       <div class="column">
         <div class="tile is-parent is-vertical has-text-left">
-          <div class="tile box">
+          <div class="tile box" v-for="item in blogs" :key="item.id">
             <article>
-              <p class="subtitle">2019-08-29</p>
+              <p class="subtitle">{{item.createTime}}</p>
               <div class="tile is-vertical" >
                 <div class="tile is-child">
-                  <p><b-tag type="is-info">实战</b-tag></p>
+                  <p><b-tag type="is-info">{{item.tags}}</b-tag></p>
                 </div>
                 <div class="tile is-child">
-                  <a class="title " href="#/b/集群Master-Unique工作节点的设计">集群Master-Unique工作节点的设计</a>
+                  <a class="title " @click="toPage('blog',{title:item.title,id:item.id})">{{item.title}}</a>
                 </div>
               </div>
               <div class="tile is-child content">
-<!--                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>-->
-              </div>
-            </article>
-          </div>
-          <div class="tile box">
-            <article>
-              <p class="subtitle">2019-05-06</p>
-              <div class="tile is-vertical" >
-                <div class="tile is-child">
-                  <b-tag type="is-info">公告</b-tag>
-                </div>
-                <div class="tile is-child">
-                  <a class="title " href="#/b/Warning--本站数据被黑">Warning--本站数据被黑</a>
-                </div>
-              </div>
-              <div class="tile is-child content">
-<!--                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>-->
-              </div>
-            </article>
-          </div>
-          <div class="tile box">
-            <article>
-              <p class="subtitle">2018-09-06</p>
-              <div class="tile is-vertical" >
-                <div class="tile is-child">
-                  <b-tag type="is-info">介绍</b-tag>
-                </div>
-                <div class="tile is-child">
-                  <a class="title " href="#/b/Cmd Markdown编辑阅读器预览">Cmd Markdown编辑阅读器预览</a>
-                </div>
-              </div>
-              <div class="tile is-child">
 <!--                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>-->
               </div>
             </article>
@@ -136,7 +104,7 @@
               <div class="media">
                 <div class="media-left">
                   <figure class="image is-96x96 is-rounded">
-                    <img src="http://img.codelinn.com/193.jpeg" alt="Placeholder image">
+                    <img src="https://pic.codelinn.com/193.jpeg" alt="Placeholder image">
                   </figure>
                 </div>
                 <div class="media-content">
@@ -194,12 +162,20 @@ export default {
         speed: 3000
       },
       imgList: [
-        {id: 1, url: 'http://img.codelinn.com/swiper1.jpg'},
-        {id: 2, url: 'http://img.codelinn.com/swiper2.jpg'},
-        // {id: 3, url: 'http://img.codelinn.com/swiper3.jpg'},
-        {id: 4, url:'http://img.codelinn.com/swiper4.jpg'}
-      ]
+        {id: 1, url: 'https://pic.codelinn.com/swiper1.jpg'},
+        {id: 2, url: 'https://pic.codelinn.com/swiper2.jpg'},
+        // {id: 3, url: 'https://pic.codelinn.com/swiper3.jpg'},
+        {id: 4, url:'https://pic.codelinn.com/swiper4.jpg'}
+      ],
+      blogs: []
     }
+  },
+  created() {
+    this.axios.get('/api/blog/getUserBlogs?userId=1').then((res)=>{
+      this.blogs = res.data.data
+    }).catch(error => {
+      window.console.info(error)
+    })
   },
   methods: {
     query(){

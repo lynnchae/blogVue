@@ -7,12 +7,37 @@
     }
 
     .hero {
-        background: url('http://img.codelinn.com/10.jpg') no-repeat center center;
+        background: url('https://pic.codelinn.com/10.jpg') no-repeat center center;
         background-size: 100% 100%;
         height: 100%;
         position: fixed;
         width: 100%;
     }
+    .span-align-middle {
+        vertical-align: middle!important;
+    }
+
+    @media screen and (max-width: 1023px){
+        .navbar-menu {
+            /*background-color: white;*/
+            background: transparent!important;
+            -webkit-box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1)!important;
+            box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1)!important;
+            padding: 0.5rem 0!important;
+        }
+    }
+
+    @media screen and (max-width: 1023px){
+         .navbar-menu {
+             -webkit-box-shadow: 0 0px 0px rgba(10, 10, 10, 0.1)!important;
+             box-shadow: 0 0px 0px rgba(10, 10, 10, 0.1)!important;
+              padding: 0rem 0!important;
+         }
+    }
+    a.navbar-item:hover {
+        background-color: transparent!important;
+    }
+
 </style>
 <template>
     <div>
@@ -21,11 +46,16 @@
                 <div class="container">
                     <div class="tile">
                         <b-navbar class="is-transparent navbar is-fixed-top" >
+                            <template slot="brand">
+                                <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                                    <img src="https://pic.codelinn.com/logo.png"/>
+                                </b-navbar-item>
+                            </template>
                             <template slot="start">
                                 <div class="field is-grouped">
-                                    <b-navbar-item class="has-text-white" href="/" >
-                                        <b-icon pack="fas" icon="angle-double-left"></b-icon>
-                                        <span >Home</span>
+                                    <b-navbar-item class="has-text-white" @click="toPage('index')" >
+                                        <b-icon class="span-align-middle" pack="fas" icon="angle-double-left"></b-icon>
+                                        <span class="span-align-middle">Home</span>
                                     </b-navbar-item>
                                 </div>
                             </template>

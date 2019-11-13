@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../pages/index/index.vue'
-import blog from '../pages/blog/blog.vue'
-import about from '../pages/about/about.vue'
+import index from '../views/Index.vue'
+import blog from '../views/Blog.vue'
+import about from '../views/About.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +13,7 @@ const routes = [
     name: 'index',
     component: index
   },{
-    path: '/b/:title',
+    path: '/b/:id',
     name: 'blog',
     component: blog
   },{
@@ -32,7 +32,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
