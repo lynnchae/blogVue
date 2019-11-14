@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import loading from 'vue-nice-loading'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -32,6 +33,7 @@ Vue.use(Buefy,{
   defaultIconComponent: 'vue-fontawesome',
   defaultIconPack: 'fas',
 })
+Vue.use(loading)
 
 Vue.config.productionTip = false
 Vue.prototype.toPage = function(page: string, param? : {}){

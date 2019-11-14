@@ -70,7 +70,6 @@
                         </div>
                     </div>
                 </div>
-                <b-loading :is-full-page="fullpage" :active.sync="loading"></b-loading>
             </div>
 
 
@@ -156,8 +155,8 @@ export default {
     components: {TocMenu},
     data(){
         return {
+            indexLoading: null,
             fullpage: false,
-            loading: false,
             id: 0,
             title: '',
             content: '',
@@ -167,11 +166,15 @@ export default {
         };
     },
     created() {
+        this.indexLoading = this.$loading({
+            text: 'Loading',
+            type: 'bars',
+            background: '#7957d5'
+        })
         this.getBlog()
     },
     methods: {
         getBlog(){
-            this.loading = true
             let id = 0;
             if(this.$route.params.id){
                 id = this.$route.params.id
@@ -189,13 +192,11 @@ export default {
                     this.title = res.data.title
                     this.content = res.data.content
                     this.toc = res.data.toc
-                    window.console.info(this.toc)
                     if(res.data.comments){
                         this.comments = res.data.comments
                     }
-                    this.loading = false
                 }
-
+                this.indexLoading.close()
             })
         },
         addClick() {

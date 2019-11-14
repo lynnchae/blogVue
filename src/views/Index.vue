@@ -80,11 +80,10 @@
                 </div>
             </div>
         </div>
-        <div class="tile is-ancestor columns">
-            <div class="column">
-                <div class="tile is-parent is-vertical has-text-left">
+        <div class="tile is-ancestor columns " >
+            <div class="column" >
+                <div class="tile is-parent is-vertical has-text-left" >
                     <div class="tile box" v-for="item in blogs" :key="item.id">
-                        <b-loading :is-full-page="fullpage" :active.sync="loading"></b-loading>
                         <article>
                             <p class="subtitle">{{item.createTime}}</p>
                             <div class="tile is-vertical">
@@ -159,7 +158,6 @@
     export default {
         name: "index",
         components: {
-            BLoading,
             BIcon,
             BNavbar,
             swiper,
@@ -168,7 +166,6 @@
         data() {
             return {
                 fullpage: false,
-                loading: false,
                 id: 1,
                 swiperOption: {
                     parallax: true,
@@ -200,15 +197,17 @@
                 {id: 7, url: 'https://pic.codelinn.com/blog/index/swipera1.jpg'},
                 {id: 8, url: 'https://pic.codelinn.com/blog/index/swipera3.jpg'},
                 {id: 9, url: 'https://pic.codelinn.com/blog/index/swipera9.jpg'},
-                {id: 10, url: 'https://pic.codelinn.com/blog/index/swipera10.jpg'},
-                {id: 11, url: 'https://pic.codelinn.com/blog/index/swipera11.jpg'},
                 {id: 12, url: 'https://pic.codelinn.com/blog/index/swipera12.jpg'}
             ]
             this.imgList = this.shuffle(picList)
-            this.loading = true
+            let indexLoading = this.$loading({
+                text: 'Loading',
+                type: 'bars',
+                background: '#7957d5'
+            })
             this.axios.get('/api/blog/getUserBlogs?userId=1').then((res) => {
                 this.blogs = res.data.data
-                this.loading = false
+                indexLoading.close()
             }).catch(error => {
                 window.console.info(error)
             })

@@ -51,14 +51,6 @@
                                     <img src="https://pic.codelinn.com/logo.png"/>
                                 </b-navbar-item>
                             </template>
-                            <template slot="start">
-                                <div class="field is-grouped">
-                                    <b-navbar-item class="has-text-white" @click="toPage('index')" >
-                                        <b-icon class="span-align-middle" pack="fas" icon="angle-double-left"></b-icon>
-                                        <span class="span-align-middle">Home</span>
-                                    </b-navbar-item>
-                                </div>
-                            </template>
                         </b-navbar>
                     </div>
                     <div class="columns ">
