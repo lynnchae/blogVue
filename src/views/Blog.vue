@@ -33,20 +33,25 @@
             </div>
             <div class="section">
             </div>
-            <div class="tile is-parent has-text-centered margin-0-50">
-                <div class="tile is-child ">
+
+            <div>
+                <div class="tile is-parent has-text-centered margin-0-50">
+                    <div class="tile is-child ">
                     <span class="title is-large">
                     {{title}}
                     </span>
-                </div>
-            </div>
-            <div class="tile is-parent is-vertical has-text-left">
-                <div class="tile is-child content">
-                    <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
-                        <div v-html="content"></div>
                     </div>
                 </div>
+                <div class="tile is-parent is-vertical has-text-left">
+                    <div class="tile is-child content">
+                        <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
+                            <div v-html="content"></div>
+                        </div>
+                    </div>
+                </div>
+                <b-loading :is-full-page="fullpage" :active.sync="loading"></b-loading>
             </div>
+
 
             <div class="section">
                 <hr/>
@@ -124,24 +129,29 @@
 export default {
     data(){
         return {
-            id: this.$route.params.id,
+            fullpage: false,
+            loading: false,
+            id: 0,
             title: '',
             content: '',
             comments: []
         };
     },
     created() {
-        sessionStorage.setItem(this.id,this.id)
         this.getBlog()
     },
     methods: {
         getBlog(){
+            this.loading = true
             let id = 0;
             if(this.$route.params.id){
                 id = this.$route.params.id
+                sessionStorage.setItem(location.href ,this.id)
             }else{
-                id = sessionStorage.getItem(this.id)
+                id = sessionStorage.getItem(location.href)
+                window.console.info(id)
             }
+            window.console.info('2>>'+ id)
             this.axios.get('/api/blog/gBlog?id='+id).then(res => {
                 window.console.info(res)
                 if(res.data.code){
@@ -155,6 +165,7 @@ export default {
                     if(res.data.comments){
                         this.comments = res.data.comments
                     }
+                    this.loading = false
                 }
 
             })

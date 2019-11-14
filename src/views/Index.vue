@@ -59,10 +59,16 @@
         <div class="tile">
           <div class="container tile is-parent swiper" style="padding-top: 50px;" >
               <swiper :options="swiperOption" class="container is-widescreen is-mobile tile is-child">
-                <swiper-slide v-for="item in imgList" :key="item.id">
-                  <figure class="image" >
-                    <img :src="item.url">
-                  </figure>
+                <swiper-slide v-for="item in imgList" :key="item.id" class="has-text-left" :style="'background-image: url('+ item.url +');' ">
+<!--                  <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
+<!--                  <br>-->
+<!--                  <div class="subtitle has-text-white" data-swiper-parallax="-200">Subtitle</div>-->
+<!--                  <div class="text has-text-white" data-swiper-parallax="-300">-->
+<!--                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec, tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>-->
+<!--                  </div>-->
+<!--                  <figure class="image" >-->
+<!--                    <img :src="item.url">-->
+<!--                  </figure>-->
                 </swiper-slide>
 <!--                <div class="swiper-pagination" slot="pagination"></div>-->
               </swiper>
@@ -74,6 +80,7 @@
       <div class="column">
         <div class="tile is-parent is-vertical has-text-left">
           <div class="tile box" v-for="item in blogs" :key="item.id">
+            <b-loading :is-full-page="fullpage" :active.sync="loading"></b-loading>
             <article>
               <p class="subtitle">{{item.createTime}}</p>
               <div class="tile is-vertical" >
@@ -109,7 +116,7 @@
                 </div>
                 <div class="media-content">
                   <p class="subtitle is-6">AboutMe</p>
-                  <p class="title is-4">LiNn@codlinn</p>
+                  <p class="title is-4">LiNn</p>
                 </div>
               </div>
               <article class="tile is-child has-text-left ">
@@ -138,9 +145,11 @@ import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
 import 'swiper/dist/css/swiper.css'
 import BIcon from "buefy/src/components/icon/Icon";
+import BLoading from "buefy/src/components/loading/Loading";
 export default {
   name: "index",
   components: {
+    BLoading,
     BIcon,
     BNavbar,
     swiper,
@@ -148,9 +157,13 @@ export default {
   },
   data () {
     return {
+      fullpage: false,
+      loading: false,
       id: 1,
       swiperOption: {
-        effect: 'fade',
+        parallax: true,
+        loop: true,
+        // effect: 'fade',
         pagination: {
           el: '.swiper-pagination',
           dynamicBullets: true
@@ -159,7 +172,7 @@ export default {
           delay: 3000,
           disableOnInteraction: false
         },
-        speed: 3000
+        speed: 5000
       },
       imgList: [
         {id: 1, url: 'https://pic.codelinn.com/swiper1.jpg'},
@@ -171,8 +184,10 @@ export default {
     }
   },
   created() {
+    this.loading = true
     this.axios.get('/api/blog/getUserBlogs?userId=1').then((res)=>{
       this.blogs = res.data.data
+      this.loading = false
     }).catch(error => {
       window.console.info(error)
     })
