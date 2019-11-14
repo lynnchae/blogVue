@@ -3,7 +3,7 @@
         color: #7957d5
     }
     .margin-0-50 {
-        margin: 0px 50px;
+        margin: 0px 30px;
     }
     .span-align-middle {
         vertical-align: middle!important;
@@ -11,13 +11,41 @@
     .md-content{
         word-break: break-word;
     }
+    .scroll-top {
+        width:25px!important;
+        height:25px!important;
+        line-height: 22px!important;
+        position: fixed!important;
+        bottom: 25px!important;
+        right: 20px!important;
+        z-index: 99!important;
+        text-align: center!important;
+        color: #fff!important;
+        font-size: 20px!important;
+        /*display: none!important;*/
+        cursor: pointer!important;
+        border-radius: 3px!important;
+        vertical-align: center;
+        padding: 0px 5px!important;
+    }
+    .scroll-top:after {
+        position: absolute!important;
+        z-index: -1!important;
+        content: ''!important;
+        top: 100%!important;
+        left: 5%!important;
+        height: 10px!important;
+        width: 90%!important;
+        opacity: 1!important;
+        background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 80%)!important;
+    }
 </style>
 <template>
     <div class="container is-widescreen">
         <div class="tile is-ancestor is-vertical" style="background: url('https://pic.codelinn.com/map.png') no-repeat center center;">
             <div class="tile is-parent">
                 <div class="tile is-child">
-                    <b-navbar class=" navbar" >
+                    <b-navbar class="navbar" shadow >
                         <template slot="brand">
                             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                                 <img src="https://pic.codelinn.com/logo.png"/>
@@ -27,9 +55,6 @@
                 </div>
             </div>
             <toc-menu :toc="toc"/>
-            <div class="section">
-            </div>
-
             <div>
                 <div class="tile is-parent has-text-centered margin-0-50">
                     <div class="tile is-child ">
@@ -118,7 +143,11 @@
                     </article>
                 </div>
             </div>
+            <a class="button scroll-top is-primary" href="#">
+                <font-awesome-icon class="has-text-white" :icon="['fa','angle-up']"/>
+            </a>
         </div>
+
     </div>
 </template>
 <script>
