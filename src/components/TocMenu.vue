@@ -134,7 +134,6 @@ export default {
         padding: 5px 0 20px;
         top: 100%;
         z-index: 1000;
-        font-family: 'Ubuntu','Open Sans';
     }
 
     .table-of-contents {

@@ -45,7 +45,7 @@
         <div class="tile is-ancestor is-vertical" style="background: url('https://pic.codelinn.com/map.png') no-repeat center center;">
             <div class="tile is-parent">
                 <div class="tile is-child">
-                    <b-navbar class="navbar" shadow >
+                    <b-navbar class="navbar" shadow :mobile-burger="mobileBurger" >
                         <template slot="brand">
                             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                                 <img src="https://pic.codelinn.com/logo.png"/>
@@ -162,7 +162,8 @@ export default {
             content: '',
             comments: [],
             toc: '',
-            clickTimes: 1
+            clickTimes: 1,
+            mobileBurger: false
         };
     },
     created() {

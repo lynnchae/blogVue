@@ -45,7 +45,7 @@
             <div class="hero-body" >
                 <div class="container">
                     <div class="tile">
-                        <b-navbar class="is-transparent navbar is-fixed-top" >
+                        <b-navbar class="is-transparent navbar is-fixed-top" :mobile-burger="mobileBurger">
                             <template slot="brand">
                                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                                     <img src="https://pic.codelinn.com/logo.png"/>
@@ -93,6 +93,7 @@
     export default {
         data(){
             return {
+                mobileBurger: false
             };
         }
     }
