@@ -8,6 +8,9 @@
     .span-align-middle {
         vertical-align: middle!important;
     }
+    .md-content{
+        word-break: break-word;
+    }
 </style>
 <template>
     <div class="container is-widescreen">
@@ -146,14 +149,11 @@ export default {
             let id = 0;
             if(this.$route.params.id){
                 id = this.$route.params.id
-                sessionStorage.setItem(location.href ,this.id)
+                sessionStorage.setItem(location.href ,id)
             }else{
                 id = sessionStorage.getItem(location.href)
-                window.console.info(id)
             }
-            window.console.info('2>>'+ id)
             this.axios.get('/api/blog/gBlog?id='+id).then(res => {
-                window.console.info(res)
                 if(res.data.code){
                     this.$buefy.notification.open({
                         message: '没有找到相关文章！',

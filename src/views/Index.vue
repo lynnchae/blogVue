@@ -59,7 +59,7 @@
         <div class="tile">
           <div class="container tile is-parent swiper" style="padding-top: 50px;" >
               <swiper :options="swiperOption" class="container is-widescreen is-mobile tile is-child">
-                <swiper-slide v-for="item in imgList" :key="item.id" class="has-text-left" :style="'background-image: url('+ item.url +');' ">
+                <swiper-slide v-for="item in imgList" :key="item.id" class="has-text-left image" :style="'background-image: url('+ item.url +');' ">
 <!--                  <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
 <!--                  <br>-->
 <!--                  <div class="subtitle has-text-white" data-swiper-parallax="-200">Subtitle</div>-->
