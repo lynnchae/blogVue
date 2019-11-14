@@ -17,23 +17,16 @@
         <div class="tile is-ancestor is-vertical" style="background: url('https://pic.codelinn.com/map.png') no-repeat center center;">
             <div class="tile is-parent">
                 <div class="tile is-child">
-                    <b-navbar class=" navbar is-fixed-top" >
+                    <b-navbar class=" navbar" >
                         <template slot="brand">
                             <b-navbar-item tag="router-link" :to="{ path: '/' }">
                                 <img src="https://pic.codelinn.com/logo.png"/>
                             </b-navbar-item>
                         </template>
-                        <template slot="start">
-                            <div class="field is-grouped">
-                                <b-navbar-item @click="toPage('index')" >
-                                    <b-icon class="span-align-middle" pack="fas" icon="angle-double-left"></b-icon>
-                                    <span class="span-align-middle">Home</span>
-                                </b-navbar-item>
-                            </div>
-                        </template>
                     </b-navbar>
                 </div>
             </div>
+            <toc-menu :toc="toc"/>
             <div class="section">
             </div>
 
@@ -129,7 +122,9 @@
     </div>
 </template>
 <script>
+import TocMenu from "../components/TocMenu";
 export default {
+    components: {TocMenu},
     data(){
         return {
             fullpage: false,
@@ -137,7 +132,9 @@ export default {
             id: 0,
             title: '',
             content: '',
-            comments: []
+            comments: [],
+            toc: '',
+            clickTimes: 1
         };
     },
     created() {
@@ -162,6 +159,8 @@ export default {
                 }else {
                     this.title = res.data.title
                     this.content = res.data.content
+                    this.toc = res.data.toc
+                    window.console.info(this.toc)
                     if(res.data.comments){
                         this.comments = res.data.comments
                     }
@@ -169,6 +168,9 @@ export default {
                 }
 
             })
+        },
+        addClick() {
+            this.clickTimes ++
         }
     }
 }
