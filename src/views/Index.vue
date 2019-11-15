@@ -25,8 +25,8 @@
             height: 100%
         }
         #app {
-            margin-left: 12px!important;
-            margin-right: 12px!important;
+            margin-left: 12px !important;
+            margin-right: 12px !important;
         }
     }
 
@@ -66,13 +66,13 @@
                     <div class="container tile is-parent swiper" style="padding-top: 50px;margin: 0px 12px;">
                         <swiper :options="swiperOption" class="container is-widescreen is-mobile tile is-child">
                             <swiper-slide v-for="item in imgList" :key="item.id" class="has-text-left image">
-                                <figure class="image" >
-<!--                                <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
-<!--                                                      <br>-->
-<!--                                                      <div class="subtitle has-text-white" data-swiper-parallax="-200">Subtitle</div>-->
-<!--                                                      <div class="text has-text-white" data-swiper-parallax="-300">-->
-<!--                                                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec, tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>-->
-<!--                                                      </div>-->
+                                <figure class="image">
+                                    <!--                                <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
+                                    <!--                                                      <br>-->
+                                    <!--                                                      <div class="subtitle has-text-white" data-swiper-parallax="-200">Subtitle</div>-->
+                                    <!--                                                      <div class="text has-text-white" data-swiper-parallax="-300">-->
+                                    <!--                                                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec, tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>-->
+                                    <!--                                                      </div>-->
                                     <img :src="item.url">
                                 </figure>
                             </swiper-slide>
@@ -82,9 +82,9 @@
                 </div>
             </div>
         </div>
-        <div class="tile is-ancestor columns " >
-            <div class="column" >
-                <div class="tile is-parent is-vertical has-text-left" >
+        <div class="tile is-ancestor columns ">
+            <div class="column">
+                <div class="tile is-parent is-vertical has-text-left">
                     <div class="tile box" v-for="item in blogs" :key="item.id">
                         <article>
                             <p class="subtitle">{{item.createTime}}</p>
@@ -109,7 +109,8 @@
                 <div class="tile is-parent is-vertical ">
                     <div class="tile is-child box">
                         <b-field>
-                            <b-input placeholder="Search..." icon="search" @keyup.enter.native="query">
+                            <b-input v-model="searchWord" placeholder="Search..." icon="search"
+                                     @keyup.enter.native="query">
                                 <font-awesome-icon class="is-primary"
                                                    :icon="['fab','fort-awesome']"></font-awesome-icon>
                             </b-input>
@@ -164,6 +165,7 @@
         },
         data() {
             return {
+                searchWord: '',
                 fullpage: false,
                 id: 1,
                 swiperOption: {
@@ -180,8 +182,7 @@
                     },
                     speed: 5000
                 },
-                imgList: [
-                ],
+                imgList: [],
                 blogs: []
             }
         },
@@ -213,10 +214,23 @@
         },
         methods: {
             query() {
-                this.$buefy.notification.open({
-                    message: 'Something happened correctly!',
-                    type: 'is-info'
-                })
+                if (this.searchWord) {
+                    this.axios.post('/api/s/blogs?word=' + this.searchWord).then((res) => {
+                        if(res.data.data[0]){
+                            this.blogs = []
+                            this.blogs.push(res.data.data[0])
+                        }else{
+                            this.$buefy.notification.open({
+                                message: '没有找到相关文章哦～',
+                                type: 'is-warning'
+                            })
+                        }
+                        indexLoading.close()
+                    }).catch(error => {
+                        window.console.info(error)
+                    })
+                }
+
             },
             shuffle(arr) {
                 let i = arr.length;

@@ -40,14 +40,11 @@
         background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 80%)!important;
     }
 
-    .fade-enter-active{
-        transition: all .2s ease;
+    .fade-enter-active .fade-leave-active{
+        transition: ease .5s;
     }
-    .fade-leave-active {
-        transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
+
     .fade-enter, .fade-leave-active {
-        transform: translateY(1000px);
         opacity: 0;
     }
 </style>
@@ -111,7 +108,6 @@
                                 </p>
                             </div>
                             <br>
-                            <transition name="fade">
                                 <figure v-show="currentClickCommentId == item.id" class="media-content" >
                                     <div class="tile is-ancestor is-vertical">
                                         <div class="tile is-parent" style="margin-top: 5px">
@@ -141,7 +137,6 @@
                                         <br/>
                                     </div>
                                 </figure>
-                            </transition>
 
 
                             <article class="media " v-for="c in item.comments" :key="c.id">
@@ -161,7 +156,6 @@
                                             <small><a @click="clickReply(item.id, c.id, c.commenter)">Reply</a> · {{c.createTime}}</small>
                                         </p>
                                     </div>
-                                    <transition name="fade">
                                         <figure v-show="currentClickCommentId == c.id" class="media-content" >
                                             <div class="tile is-ancestor is-vertical">
                                                 <div class="tile is-parent" style="margin-top: 5px">
@@ -191,7 +185,6 @@
                                                 <br/>
                                             </div>
                                         </figure>
-                                    </transition>
 
                                 </div>
                             </article>
