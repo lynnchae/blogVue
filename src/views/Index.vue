@@ -44,14 +44,13 @@
                     <template slot="start">
                         <div class="field is-grouped">
                             <b-navbar-item href="#">
-                                <b-icon pack="fas" icon="search"></b-icon>
                                 Home
                             </b-navbar-item>
                             <b-navbar-dropdown hoverable label="Info">
                                 <b-navbar-item @click="toPage('about')">
                                     About
                                 </b-navbar-item>
-                                <b-navbar-item href="#">
+                                <b-navbar-item @click="toPage('contact')">
                                     Contact
                                 </b-navbar-item>
                             </b-navbar-dropdown>
@@ -64,18 +63,18 @@
         <div class="tile is-ancestor">
             <div class="tile is-vertical">
                 <div class="tile">
-                    <div class="container tile is-parent swiper" style="padding-top: 50px;">
+                    <div class="container tile is-parent swiper" style="padding-top: 50px;margin: 0px 12px;">
                         <swiper :options="swiperOption" class="container is-widescreen is-mobile tile is-child">
                             <swiper-slide v-for="item in imgList" :key="item.id" class="has-text-left image">
-                                                  <figure class="image" >
-<!--                                                      <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
+                                <figure class="image" >
+<!--                                <div class="title has-text-white" style="padding-left: 200px" data-swiper-parallax="-100">Slide 1</div>-->
 <!--                                                      <br>-->
 <!--                                                      <div class="subtitle has-text-white" data-swiper-parallax="-200">Subtitle</div>-->
 <!--                                                      <div class="text has-text-white" data-swiper-parallax="-300">-->
 <!--                                                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec, tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>-->
 <!--                                                      </div>-->
-                                                      <img :src="item.url">
-                                                  </figure>
+                                    <img :src="item.url">
+                                </figure>
                             </swiper-slide>
                             <!--                <div class="swiper-pagination" slot="pagination"></div>-->
                         </swiper>
@@ -92,7 +91,7 @@
                             <div class="tile is-vertical">
                                 <div class="tile is-child">
                                     <p>
-                                        <b-tag type="is-info">{{item.tags}}</b-tag>
+                                        <b-tag type="is-primary">{{item.tags}}</b-tag>
                                     </p>
                                 </div>
                                 <div class="tile is-child">
@@ -155,13 +154,10 @@
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
     import 'swiper/dist/css/swiper.css'
-    import BIcon from "buefy/src/components/icon/Icon";
-    import BLoading from "buefy/src/components/loading/Loading";
 
     export default {
         name: "index",
         components: {
-            BIcon,
             BNavbar,
             swiper,
             swiperSlide

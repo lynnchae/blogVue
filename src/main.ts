@@ -18,6 +18,10 @@ import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamat
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 Vue.use(VueAxios,axios);
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,

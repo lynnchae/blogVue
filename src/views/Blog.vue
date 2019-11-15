@@ -39,6 +39,17 @@
         opacity: 1!important;
         background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 80%)!important;
     }
+
+    .fade-enter-active{
+        transition: all .2s ease;
+    }
+    .fade-leave-active {
+        transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .fade-enter, .fade-leave-active {
+        transform: translateY(1000px);
+        opacity: 0;
+    }
 </style>
 <template>
     <div class="container is-widescreen">
@@ -96,9 +107,42 @@
                                     {{item.comment}}
                                     <br>
                                     <br>
-                                    <small><a>Reply</a> · {{item.createTime}}</small>
+                                    <small><a @click="clickReply(item.id ,item.id, item.commenter)">Reply</a> · {{item.createTime}}</small>
                                 </p>
                             </div>
+                            <br>
+                            <transition name="fade">
+                                <figure v-show="currentClickCommentId == item.id" class="media-content" >
+                                    <div class="tile is-ancestor is-vertical">
+                                        <div class="tile is-parent" style="margin-top: 5px">
+                                            <div class="tile is-child is-2">
+                                                <b-field label="Name" label-position="on-border">
+                                                    <b-input v-model="user"></b-input>
+                                                </b-field>
+                                            </div>
+                                        </div>
+                                        <div class="tile is-parent">
+                                            <div class="tile is-child is-3">
+                                                <b-field label="Email" label-position="on-border">
+                                                    <b-input v-model="userEmail"></b-input>
+                                                </b-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <b-field >
+                                            <textarea v-model="newComment" class="textarea" placeholder="Add a comment..."></textarea>
+                                        </b-field>
+                                    </div>
+                                    <div class="field">
+                                        <p class="control">
+                                            <button class="button is-primary" @click="sendComment">Post Reply</button>
+                                        </p>
+                                        <br/>
+                                    </div>
+                                </figure>
+                            </transition>
+
 
                             <article class="media " v-for="c in item.comments" :key="c.id">
                                 <figure class="media-left">
@@ -114,30 +158,82 @@
                                             {{c.comment}}
                                             <br>
                                             <br>
-                                            <small><a>Reply</a> · {{c.createTime}}</small>
+                                            <small><a @click="clickReply(item.id, c.id, c.commenter)">Reply</a> · {{c.createTime}}</small>
                                         </p>
                                     </div>
+                                    <transition name="fade">
+                                        <figure v-show="currentClickCommentId == c.id" class="media-content" >
+                                            <div class="tile is-ancestor is-vertical">
+                                                <div class="tile is-parent" style="margin-top: 5px">
+                                                    <div class="tile is-child is-2">
+                                                        <b-field label="Name" label-position="on-border">
+                                                            <b-input v-model="user"></b-input>
+                                                        </b-field>
+                                                    </div>
+                                                </div>
+                                                <div class="tile is-parent">
+                                                    <div class="tile is-child is-3">
+                                                        <b-field label="Email" label-position="on-border">
+                                                            <b-input v-model="userEmail"></b-input>
+                                                        </b-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <b-field >
+                                                    <textarea v-model="newComment" class="textarea" placeholder="Add a comment..."></textarea>
+                                                </b-field>
+                                            </div>
+                                            <div class="field">
+                                                <p class="control">
+                                                    <button class="button is-primary" @click="sendComment">Post Reply</button>
+                                                </p>
+                                                <br/>
+                                            </div>
+                                        </figure>
+                                    </transition>
+
                                 </div>
                             </article>
                         </div>
                     </article>
                     <article class="media">
+
                         <figure class="media-left">
                             <p class="image is-64x64">
                                 <img class="is-rounded" src="https://pic.codelinn.com//random/header5.png">
                             </p>
                         </figure>
                         <div class="media-content">
-                            <div class="field">
-                                <p class="control">
-                                    <textarea class="textarea" placeholder="Add a comment..."></textarea>
-                                </p>
-                            </div>
-                            <div class="field">
-                                <p class="control">
-                                    <button class="button is-outlined">Post comment</button>
-                                </p>
-                            </div>
+                            <figure class="media-content" >
+                                <div class="tile is-ancestor is-vertical">
+                                    <div class="tile is-parent" style="margin-top: 5px">
+                                        <div class="tile is-child is-2">
+                                            <b-field label="Name" label-position="on-border">
+                                                <b-input v-model="user"></b-input>
+                                            </b-field>
+                                        </div>
+                                    </div>
+                                    <div class="tile is-parent">
+                                        <div class="tile is-child is-3">
+                                            <b-field label="Email" label-position="on-border">
+                                                <b-input v-model="userEmail"></b-input>
+                                            </b-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <b-field >
+                                        <textarea v-model="newComment" class="textarea" placeholder="Add a comment..."></textarea>
+                                    </b-field>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <button class="button is-outlined" @click="postComment">Post Comment</button>
+                                    </p>
+                                    <br/>
+                                </div>
+                            </figure>
                         </div>
                     </article>
                 </div>
@@ -163,10 +259,30 @@ export default {
             comments: [],
             toc: '',
             clickTimes: 1,
-            mobileBurger: false
+            mobileBurger: false,
+            currentClickCommentId : 0,
+            newComment: '',
+            replyTo: '',
+            comment: {
+                blogId: 0,
+                commenter: '',
+                commenterEmail: '',
+                replyTo: '',
+                comment: '',
+                parentId: ''
+            },
+            user: '',
+            userEmail: '',
+            parentId: 0
         };
     },
     created() {
+        if(this.$cookies.isKey('commenter')){
+            this.user = this.$cookies.get('commenter')
+        }
+        if(this.$cookies.isKey('commenterEmail')){
+            this.userEmail = this.$cookies.get('commenterEmail')
+        }
         this.indexLoading = this.$loading({
             text: 'Loading',
             type: 'bars',
@@ -183,6 +299,7 @@ export default {
             }else{
                 id = sessionStorage.getItem(location.href)
             }
+            this.id = id
             this.axios.get('/api/blog/gBlog?id='+id).then(res => {
                 if(res.data.code){
                     this.$buefy.notification.open({
@@ -202,6 +319,65 @@ export default {
         },
         addClick() {
             this.clickTimes ++
+        },
+        clickReply(parentId, id, replyTo) {
+            this.resetComment()
+            this.currentClickCommentId = id;
+            this.replyTo = replyTo
+            this.parentId = parentId
+        },
+        resetComment(){
+            this.comment = {
+                blogId: 0,
+                commenter: '',
+                commenterEmail: '',
+                replyTo: '',
+                comment: '',
+                parentId: ''
+            }
+            this.newComment = ''
+            this.parentId = 0
+        },
+        sendComment(){
+            if(!this.$cookies.isKey('commenter')){
+                this.$cookies.set('commenter',this.user,'30D')
+            }
+            if(!this.$cookies.isKey('commenterEmail')){
+                this.$cookies.set('commenterEmail',this.userEmail,'30D')
+            }
+            this.comment.blogId = this.id
+            this.comment.commenter = this.user
+            this.comment.commenterEmail = this.userEmail
+            this.comment.comment = this.newComment
+            this.comment.replyTo = this.replyTo
+            this.comment.parentId = this.parentId
+            this.axios.post('/api/comment/sendComment',this.comment).then(res => {
+                this.$buefy.notification.open({
+                    message: '评论成功！',
+                    type: 'is-success'
+                })
+                this.getBlog()
+            }).finally(info => {
+                this.currentClickCommentId = 0
+                this.resetComment()
+            })
+        },
+        postComment(){
+            this.comment.blogId = this.id
+            this.comment.commenter = this.user
+            this.comment.commenterEmail = this.userEmail
+            this.comment.comment = this.newComment
+            this.comment.replyTo = ''
+            this.comment.parentId = 0
+            this.axios.post('/api/comment/sendComment',this.comment).then(res => {
+                this.$buefy.notification.open({
+                    message: '评论成功！',
+                    type: 'is-success'
+                })
+                this.getBlog()
+            }).finally(info => {
+                this.resetComment()
+            })
         }
     }
 }

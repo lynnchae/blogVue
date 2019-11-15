@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import index from '../views/Index.vue'
 import blog from '../views/Blog.vue'
 import about from '../views/About.vue'
+import contact from '../views/Contact.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,10 @@ const routes = [
     path: '/about',
     name: 'about',
     component: about
+  },{
+    path: '/contact',
+    name: 'contact',
+    component: contact
   }
   // {
   //   path: '/about',
@@ -32,7 +37,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

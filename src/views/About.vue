@@ -34,6 +34,16 @@
               padding: 0rem 0!important;
          }
     }
+
+    @media screen and (max-width: 768px) and (min-width: 100px) {
+
+        #app {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+
+    }
+
     a.navbar-item:hover {
         background-color: transparent!important;
     }
