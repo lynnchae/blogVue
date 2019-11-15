@@ -2,7 +2,7 @@
     <div>
         <div class="switcher" :class="[clickTimes % 2 == 0 ? 'switcher-show' : '']">
             <div class="switch-btn">
-                <b-button type="is-primary" @click="addClick"><font-awesome-icon v-if="clickTimes % 2 == 0" class="has-text-white" :icon="['fas','angle-double-left']"/>
+                <b-button type="is-primary is-shadowless" @click="addClick"><font-awesome-icon v-if="clickTimes % 2 == 0" class="has-text-white" :icon="['fas','angle-double-left']"/>
                     <font-awesome-icon v-if="clickTimes % 2 == 1" class="has-text-white" :icon="['fas','angle-double-right']"/></b-button>
             </div>
             <div class="switch-menu">
@@ -112,21 +112,11 @@ export default {
     .switcher #styleOptions li a.color8 {background: #be9656;}
     .switcher #styleOptions li a.color9 {background: #cc2d6f;}
     .switcher #styleOptions li a.color10 {background: #f7892f;}
-    .switcher .theme-demo {margin: 0 -5px;text-align: center;}
-    .switcher .theme-demo li {float: left;padding: 0 5px;width: 50%;}
-    .switcher .theme-demo h6 {
-        text-transform: uppercase;
-        color: #fff;
-        margin-top: 5px;
-        font-weight: normal;
-        font-size: 17px;
-    }
-    .switcher .theme-demo li a {border: 1px solid rgba(255,255,255,0.6);}
     .toc-div {
         background-clip: padding-box;
         border-radius: 4px;
         /*float: left;*/
-        font-size: 15px;
+        font-size: 13px;
         list-style: none outside none;
         margin: 2px 0 0;
         min-width: 160px;
@@ -162,7 +152,7 @@ export default {
     }
     .toc a{
         color: #FFFFFF;
-        font-size: 16px;
+        font-size: 14px;
     }
     .toc a:hover{
         color:#7957d5;
