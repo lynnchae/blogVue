@@ -85,23 +85,39 @@
         <div class="tile is-ancestor columns ">
             <div class="column">
                 <div class="tile is-parent is-vertical has-text-left">
-                    <div class="tile box" v-for="item in blogs" :key="item.id">
-                        <article>
-                            <p class="subtitle">{{item.createTime}}</p>
-                            <div class="tile is-vertical">
-                                <div class="tile is-child">
-                                    <p>
-                                        <b-tag type="is-primary">{{item.tags}}</b-tag>
-                                    </p>
+                    <div class="tile box is-vertical" v-for="item in blogs" :key="item.id">
+                        <div class="tile is-child">
+                            <article>
+                                <p class="subtitle">{{item.createTime}}</p>
+                                <div class="tile is-vertical">
+                                    <div class="tile is-child">
+                                        <p>
+                                            <b-tag type="is-primary">{{item.tags}}</b-tag>
+                                        </p>
+                                    </div>
+                                    <div class="tile is-child">
+                                        <a class="title " @click="toPage('blog',{title:item.title,id:item.id})">{{item.title}}</a>
+                                    </div>
                                 </div>
-                                <div class="tile is-child">
-                                    <a class="title " @click="toPage('blog',{title:item.title,id:item.id})">{{item.title}}</a>
+
+                            </article>
+                        </div>
+                        <div class="tile is-child is-3">
+                            <nav class="level">
+                                <div class="level-item has-text-left">
+                                    <div>
+                                        <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
+                                        <p ></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tile is-child content">
-                                <!--                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>-->
-                            </div>
-                        </article>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                        <p class="heading"><font-awesome-icon icon="comment"></font-awesome-icon> ({{item.comments}})</p>
+                                        <p ></p>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +222,7 @@
                 background: '#7957d5'
             })
             this.axios.get('/api/blog/getUserBlogs?userId=1').then((res) => {
-                this.blogs = res.data.data
+                this.blogs = res.data.data.list
                 indexLoading.close()
             }).catch(error => {
                 window.console.info(error)
