@@ -103,7 +103,7 @@
                             </article>
                         </div>
                         <div class="tile is-child is-3">
-                            <nav class="level">
+                            <nav class="level is-mobile">
                                 <div class="level-item has-text-left">
                                     <div>
                                         <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
