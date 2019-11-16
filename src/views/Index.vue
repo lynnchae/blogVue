@@ -104,6 +104,8 @@
                         </div>
                         <div class="tile is-child is-3">
                             <nav class="level is-mobile">
+                                <div class="level-left is-8">
+
                                 <div class="level-item has-text-left">
                                     <div>
                                         <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
@@ -116,6 +118,8 @@
                                         <p ></p>
                                     </div>
                                 </div>
+                                </div>
+
                             </nav>
                         </div>
                     </div>
