@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import 'swiper/dist/css/swiper.css'
+
 import loading from 'vue-nice-loading'
 
 import { library } from '@fortawesome/fontawesome-svg-core'

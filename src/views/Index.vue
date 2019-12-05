@@ -136,6 +136,31 @@
                             </b-input>
                         </b-field>
                     </div>
+                    <article class="message is-primary " style="box-shadow: 0 10px 12px 0 rgba(10, 10, 10, 0.1);background-color: #FFFFFF">
+                        <div class="message-header">
+                            <p>更新</p>
+                        </div>
+                        <div class="message-body has-text-left" style="color: #555555;">
+                            <ul style="list-style: inside">
+                                <li>
+                                    前后端分离，Vue + SpringBoot
+                                </li>
+                                <li>
+                                    Contact Me功能迁移上线
+                                </li>
+                                <li>
+                                    首页Search、文章评论功能迁移上线
+                                </li>
+                                <li>
+                                    后台文章编辑功能设计中...
+                                </li>
+                                <li>
+                                    即将加入github三方登录接入...
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
                     <div class="tile is-child box">
                         <div class="media">
                             <div class="media-left">

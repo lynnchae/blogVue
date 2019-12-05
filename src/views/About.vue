@@ -88,7 +88,20 @@
 
                                     </span>
                                     <span class="icon has-text-danger">
-                                      <a href="#/contact.html"><font-awesome-icon class="has-text-white" :icon="['fab','weixin']"/></a>
+                                        <div class="dropdown is-hoverable">
+                                          <div class="dropdown-trigger">
+                                              <span aria-haspopup="true" aria-controls="dropdown-menu4" class="icon is-small">
+                                                <font-awesome-icon class="has-text-white" :icon="['fab','weixin']"/>
+                                              </span>
+                                          </div>
+                                          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                                            <div class="dropdown-content">
+                                              <div class="dropdown-item">
+                                                <img src="https://pic.codelinn.com/blog/wechat.jpg" />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                     </span>
                                 </div>
                             </div>
