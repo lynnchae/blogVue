@@ -76,7 +76,7 @@
                                 </article>
                                 <div class="container">
                                     <span class="icon has-text-info">
-                                        <a href="#/contact.html"><font-awesome-icon class="has-text-white" :icon="['fas','at']"/></a>
+                                        <a @click="toPage('contact')"><font-awesome-icon class="has-text-white" :icon="['fas','at']"/></a>
                                     </span>
                                     <span class="icon has-text-success">
 
