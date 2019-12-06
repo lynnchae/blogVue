@@ -50,6 +50,7 @@
 </style>
 <template>
     <div class="container is-widescreen">
+        <div class="pageloader is-left-to-right" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading Blog</span></div>
         <div class="tile is-ancestor is-vertical" style="background: url('https://pic.codelinn.com/map.png') no-repeat center center;">
             <div class="tile is-parent">
                 <div class="tile is-child">
@@ -244,6 +245,7 @@ export default {
     components: {TocMenu},
     data(){
         return {
+            loading: true,
             indexLoading: null,
             fullpage: false,
             id: 0,
@@ -276,11 +278,11 @@ export default {
         if(this.$cookies.isKey('commenterEmail')){
             this.userEmail = this.$cookies.get('commenterEmail')
         }
-        this.indexLoading = this.$loading({
-            text: 'Loading',
-            type: 'bars',
-            background: '#7957d5'
-        })
+        // this.indexLoading = this.$loading({
+        //     text: 'Loading',
+        //     type: 'bars',
+        //     background: '#7957d5'
+        // })
         this.getBlog()
     },
     methods: {
@@ -306,8 +308,9 @@ export default {
                     if(res.data.comments){
                         this.comments = res.data.comments
                     }
+                    this.loading = false
                 }
-                this.indexLoading.close()
+                // this.indexLoading.close()
             })
         },
         addClick() {

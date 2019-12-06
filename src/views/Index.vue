@@ -19,6 +19,9 @@
     .swiper {
         height: 500px;
     }
+    .hover:hover {
+        cursor: pointer;
+    }
 
     @media screen and (min-width: 100px) and (max-width: 768px) {
         .swiper {
@@ -33,6 +36,22 @@
 </style>
 <template>
     <div class="container">
+        <div class="pageloader is-right-to-left" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading</span></div>
+        <div id="quickviewDefault" v-bind:class="{'is-active' : showReview}" class="quickview" style="border-left: 3px solid #7957d5;">
+            <header class="quickview-header">
+                <p class="title">{{blog.title}}</p>
+                <span class="delete" @click="showReview = false"></span>
+            </header>
+
+            <div class="quickview-body">
+                <div class="quickview-block content has-text-left" style="margin:20px 10px" >
+                    <div class="md-content" v-html="blog.content">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="tile is-ancestor">
             <div class="tile is-parent">
                 <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow>
@@ -88,7 +107,18 @@
                     <div class="tile box is-vertical" v-for="item in blogs" :key="item.id">
                         <div class="tile is-child">
                             <article>
-                                <p class="subtitle">{{item.createTime}}</p>
+                                <div class="columns">
+                                    <div class="column is-one-quarter" style="align-self: center">
+                                        <span class="subtitle">{{item.createTime}}</span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="has-text-primary hover">
+                                            <font-awesome-icon v-if="currentReviewId === item.id" class="is-primary" :icon="['fa','feather-alt']" @click="review(item.id)"></font-awesome-icon>
+                                            <font-awesome-icon v-if="currentReviewId !== item.id" class="is-primary" :icon="['fa','feather']" @click="review(item.id)"></font-awesome-icon>
+                                        </span>
+<!--                                        <button class="button is-primary" >review</button>-->
+                                    </div>
+                                </div>
                                 <div class="tile is-vertical">
                                     <div class="tile is-child">
                                         <p>
@@ -200,7 +230,6 @@
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
     import 'swiper/dist/css/swiper.css'
-
     export default {
         name: "index",
         components: {
@@ -210,13 +239,20 @@
         },
         data() {
             return {
+                showReview: false,
+                currentReviewId: 0,
+                blog: {
+                    title: '',
+                    content: ''
+                },
+                loading: true,
                 searchWord: '',
                 fullpage: false,
                 id: 1,
                 swiperOption: {
-                    parallax: true,
+                    // parallax: true,
                     loop: true,
-                    // effect: 'fade',
+                    effect: 'fade',
                     pagination: {
                         el: '.swiper-pagination',
                         dynamicBullets: true
@@ -245,14 +281,15 @@
                 {id: 12, url: 'https://pic.codelinn.com/blog/index/swipera12.jpg'}
             ]
             this.imgList = this.shuffle(picList)
-            let indexLoading = this.$loading({
-                text: 'Loading',
-                type: 'bars',
-                background: '#7957d5'
-            })
+            // let indexLoading = this.$loading({
+            //     text: 'Loading',
+            //     type: 'bars',
+            //     background: '#7957d5'
+            // })
             this.axios.get('/api/blog/getUserBlogs?userId=1').then((res) => {
                 this.blogs = res.data.data.list
-                indexLoading.close()
+                // indexLoading.close()
+                this.loading = false
             }).catch(error => {
                 window.console.info(error)
             })
@@ -276,6 +313,21 @@
                     })
                 }
 
+            },
+            review(id){
+                if(this.showReview){
+                    this.showReview = false
+                    this.currentReviewId = 0
+                    return
+                }
+                this.currentReviewId = id
+                this.axios.get('/api/blog/gBlog?id='+id).then(res => {
+                    if(!res.data.code){
+                        this.blog.title = res.data.title
+                        this.blog.content = res.data.content
+                        this.showReview = true
+                    }
+                })
             },
             shuffle(arr) {
                 let i = arr.length;

@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import 'bulma-extensions/dist/css/bulma-extensions.min.css'
 import 'swiper/dist/css/swiper.css'
 
 import loading from 'vue-nice-loading'
