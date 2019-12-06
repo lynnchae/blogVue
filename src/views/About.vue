@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style lang="scss">
     html{
         height: 0px!important;
     }
@@ -6,7 +6,7 @@
         margin-top: 0px;
     }
 
-    .hero {
+    .about-hero {
         background: url('https://pic.codelinn.com/10.jpg') no-repeat center center;
         background-size: 100% 100%;
         height: 100%;
@@ -51,7 +51,7 @@
 </style>
 <template>
     <div>
-        <section class="hero"  >
+        <section class="hero about-hero"  >
             <div class="hero-body" >
                 <div class="container">
                     <div class="tile">

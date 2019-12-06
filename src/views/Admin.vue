@@ -2,47 +2,64 @@
     <section class="hero is-medium">
         <div class="hero-body" style="padding-top: 10px">
             <div class="container">
-                <div class="tile">
-                    <b-navbar class="navbar is-fixed-top has-background-white" :mobile-burger="false">
-                        <template slot="brand">
-                            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                                <img src="https://pic.codelinn.com/logo.png"/>
-                            </b-navbar-item>
-                        </template>
-                    </b-navbar>
-                </div>
-                <div class="tile is-ancestor">
-                    <div class="tile is-12 is-parent">
+                <div class="tile is-vertical is-ancestor">
+                    <div class="tile is-parent">
+                        <div class="tile is-child">
+                            <b-navbar class="navbar is-fixed-top has-background-white" :mobile-burger="false">
+                                <template slot="brand">
+                                    <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                                        <img src="https://pic.codelinn.com/logo.png"/>
+                                    </b-navbar-item>
+                                </template>
+                            </b-navbar>
+                        </div>
+                    </div>
+                    <div class="tile is-12 is-parent" style="margin-top: 20px">
                         <div class="tile is-child is-2" style="border-right: 1px #7957d5;box-shadow: rgba(121, 87, 213, 0.3) 3px 0px 0px 0px">
                             <aside class="menu has-text-left" >
                                 <ul class="menu-list">
-                                    <li><a>LiNn</a></li>
+                                    <li><a><font-awesome-icon icon="home"></font-awesome-icon> LiNn</a></li>
                                     <p class="menu-label">
                                         Personnal Center
                                     </p>
                                     <li>
-                                        <a class="">Blogs</a>
+                                        <a class=""><font-awesome-icon icon="blog"></font-awesome-icon> Blogs</a>
                                         <ul>
-                                            <li><a v-bind:class="{'is-active':currentMenu == 'Posted'}" @click="tab('Posted')" class="">Posted</a></li>
-                                            <li><a v-bind:class="{'is-active':currentMenu == 'Edit'}" @click="tab('Edit')" >Edit</a></li>
+                                            <li><a v-bind:class="{'is-active':currentMenu == 'Posted'}" @click="tab('Posted')" class="">
+                                                <font-awesome-icon icon="paper-plane"></font-awesome-icon> Posted</a></li>
+                                            <li><a v-bind:class="{'is-active':currentMenu == 'Edit'}" @click="tab('Edit')" >
+                                                <font-awesome-icon icon="pencil-alt"></font-awesome-icon> Edit</a></li>
                                         </ul>
                                     </li>
                                 </ul>
                             </aside>
                         </div>
-                        <div class="tile is-child is-10" >
+                        <div class="tile is-10" >
                             <div v-show="currentMenu === 'Edit'"  class="tile is-vertical is-parent">
-                                <div class="tile is-child is-4 control">
-                                    <div class="field">
-                                        <p class="control has-icons-left has-icons-right">
-                                            <input v-model="blog.title" class="input" type="text" placeholder="Blog Title">
-                                            <span class="icon is-small is-left has-text-primary">
-                                      <font-awesome-icon icon="leaf"></font-awesome-icon>
-                                    </span>
-                                        </p>
-                                    </div>
+                                <div class="tile is-child control">
+                                    <b-field grouped>
+                                        <b-field expanded>
+                                            <p class="control has-icons-left ">
+                                                <b-input v-model="blog.title"  placeholder="Blog Title"
+                                                         type="text">
+                                                </b-input>
+                                                <span class="icon is-small has-text-primary is-left">
+                                                    <font-awesome-icon icon="leaf"></font-awesome-icon>
+                                                </span>
+                                            </p>
+                                        </b-field>
+                                        <b-field expanded>
+                                            <button v-bind:class="{'is-loading': buttonLoading}" class="button is-primary" disabled @click="submit">
+                                                <b-icon
+                                                        pack="fas"
+                                                        icon="paper-plane"
+                                                        size="is-small">
+                                                </b-icon>
+                                            </button>
+                                        </b-field>
+                                    </b-field>
                                 </div>
-                                <div class="tile is-child is-4">
+                                <div class="tile is-child is-2">
                                     <div class="field">
                                         <p class="control has-icons-left has-icons-right">
                                             <input v-model="blog.tags" class="input" type="text" placeholder="Tags">
@@ -59,9 +76,6 @@
                                             @change="change"
                                             style="min-height: 500px"
                                     />
-                                </div>
-                                <div class="tile is-child is-flex ">
-                                    <button v-bind:class="{'is-loading': buttonLoading}" class="button is-primary" disabled @click="submit">Submit</button>
                                 </div>
                             </div>
 
@@ -106,10 +120,12 @@
 <script>
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
+    import BField from "buefy/src/components/field/Field";
 
     export default {
         // 注册
         components: {
+            BField,
             mavonEditor,
         },
         data() {
