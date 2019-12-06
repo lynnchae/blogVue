@@ -75,6 +75,20 @@
                             </b-navbar-dropdown>
                         </div>
                     </template>
+                    <template slot="end">
+                        <b-navbar-item tag="div">
+<!--                            <div class="buttons">-->
+<!--                                <a class="button is-primary">-->
+<!--                                    <strong>Sign up</strong>-->
+<!--                                </a>-->
+<!--                                <a class="button is-light">-->
+<!--                                    Log in-->
+<!--                                </a>-->
+<!--                            </div>-->
+
+                            <img class="is-rounded hover" @click="toPage('admin')" src="https://pic.codelinn.com/193.jpeg">
+                        </b-navbar-item>
+                    </template>
                 </b-navbar>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
     html{
         height: 0px!important;
     }

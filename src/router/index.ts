@@ -4,6 +4,7 @@ import index from '../views/Index.vue'
 import blog from '../views/Blog.vue'
 import about from '../views/About.vue'
 import contact from '../views/Contact.vue'
+import admin from '../views/Admin.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,11 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: contact
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: admin
   }
   // {
   //   path: '/about',
