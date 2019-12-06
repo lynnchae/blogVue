@@ -88,7 +88,7 @@
 
                                     </span>
                                     <span class="icon has-text-danger">
-                                        <div class="dropdown is-hoverable">
+                                        <div class="dropdown is-hoverable is-up">
                                           <div class="dropdown-trigger">
                                               <span aria-haspopup="true" aria-controls="dropdown-menu4" class="icon is-small">
                                                 <font-awesome-icon class="has-text-white" :icon="['fab','weixin']"/>

@@ -37,7 +37,7 @@
 <template>
     <div class="container">
         <div class="pageloader is-right-to-left" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading</span></div>
-        <div id="quickviewDefault" v-bind:class="{'is-active' : showReview}" class="quickview" style="border-left: 3px solid #7957d5;">
+        <div id="quickviewDefault" v-bind:class="{'is-active' : showReview}" class="quickview" style="border-left: 3px solid #7957d5;box-shadow: rgba(121, 87, 213, 0.3) -3px 0px 5px 0px">
             <header class="quickview-header">
                 <p class="title">{{blog.title}}</p>
                 <span class="delete" @click="showReview = false"></span>
@@ -315,7 +315,7 @@
 
             },
             review(id){
-                if(this.showReview){
+                if(this.showReview && this.currentReviewId === id){
                     this.showReview = false
                     this.currentReviewId = 0
                     return
