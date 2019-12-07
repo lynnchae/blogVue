@@ -1,5 +1,6 @@
 <template>
     <section class="hero is-medium">
+        <div class="pageloader is-left-to-right" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading</span></div>
         <div class="hero-body" style="padding-top: 10px">
             <div class="container">
                 <div class="tile is-vertical is-ancestor">
@@ -18,7 +19,11 @@
                         <div class="tile is-child is-2" style="border-right: 1px #7957d5;box-shadow: rgba(121, 87, 213, 0.3) 3px 0px 0px 0px">
                             <aside class="menu has-text-left" >
                                 <ul class="menu-list">
-                                    <li><a><font-awesome-icon icon="home"></font-awesome-icon> LiNn</a></li>
+                                    <li>
+                                        <a v-bind:class="{'is-active':currentMenu == 'User'}" @click="tab('User')" >
+                                            <font-awesome-icon icon="user"></font-awesome-icon> {{user.name | nameFilter}}
+                                        </a>
+                                    </li>
                                     <p class="menu-label">
                                         Personnal Center
                                     </p>
@@ -108,6 +113,34 @@
                                 </div>
                             </div>
 
+                            <div v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
+                                <div class="box card has-text-left">
+                                    <div class="card-content">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <figure class="image is-128x128">
+                                                    <img class="is-rounded" style="border: 2px solid rgb(121, 87, 213);box-shadow: 0px 0px 5px 2px rgba(121,87,123,.3);" :src="user.avatarUrl">
+                                                </figure>
+                                            </div>
+                                            <div class="media-content">
+                                                <p class="title is-4">{{user.name}}</p>
+                                                <p class="subtitle is-6">{{user.email}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="level">
+                                            <div class="level-item level-right">
+                                                <div class=" content">
+                                                    <br/>
+                                                    <time datetime="2016-1-1">Registered at <strong style="color:#7957d5">{{user.createTime}}</strong></time>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -123,6 +156,15 @@
     import BField from "buefy/src/components/field/Field";
 
     export default {
+        filters: {
+            nameFilter(name){
+                if(name ===''){
+                    return 'Visitor'
+                }else{
+                    return name
+                }
+            }
+        },
         // 注册
         components: {
             BField,
@@ -130,6 +172,7 @@
         },
         data() {
             return {
+                loading: true,
                 currentMenu: '',
                 blog: {
                     title: '',
@@ -138,7 +181,13 @@
                     done: 1
                 },
                 buttonLoading: false,
-                blogs: []
+                blogs: [],
+                user: {
+                    userId: 0,
+                    name: '',
+                    avatarUrl: '',
+                    email: ''
+                }
             }
         },
         methods: {
@@ -165,7 +214,7 @@
             tab(menu){
                 this.currentMenu = menu
                 if(menu === 'Posted'){
-                    this.axios.get('/api/blog/getUserBlogs?userId=1').then((res) => {
+                    this.axios.get('/api/blog/getUserBlogs?userId=' + this.user.userId).then((res) => {
                         this.blogs = res.data.data.list
                         // indexLoading.close()
                         // this.loading = false
@@ -191,7 +240,31 @@
             }
         },
         mounted() {
-            this.tab('Posted')
+            const token = sessionStorage.getItem('token');
+            if(token){
+                this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
+                    this.user = res.data.data
+                    window.console.info(this.user)
+                }).catch(() => {
+                })
+            }
+            const code = this.$route.query.code;
+            if(code){
+                if (location.href.indexOf("?code=") !== -1) {
+                    const newUrl = location.href.split("?")[0];
+                    history.pushState('', '', newUrl);
+                }
+                this.axios.post('/api/user/auth/github?code='+ code).then((res) => {
+                    this.user = res.data.data
+                    sessionStorage.setItem('token',res.data.data.token)
+                }).catch(() => {
+                })
+            }
+
+            this.tab('User')
+            this.$nextTick(() => {
+                this.loading = false
+            })
         }
     }
 </script>

@@ -37,6 +37,7 @@
 <template>
     <div class="container">
         <div class="pageloader is-right-to-left" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading</span></div>
+
         <div id="quickviewDefault" v-bind:class="{'is-active' : showReview}" class="quickview" style="border-left: 3px solid #7957d5;box-shadow: rgba(121, 87, 213, 0.3) -3px 0px 5px 0px">
             <header class="quickview-header">
                 <p class="title">{{blog.title}}</p>
@@ -77,21 +78,53 @@
                     </template>
                     <template slot="end">
                         <b-navbar-item tag="div">
-<!--                            <div class="buttons">-->
-<!--                                <a class="button is-primary">-->
-<!--                                    <strong>Sign up</strong>-->
-<!--                                </a>-->
-<!--                                <a class="button is-light">-->
-<!--                                    Log in-->
-<!--                                </a>-->
-<!--                            </div>-->
+                            <div v-show="!user.avatarUrl" class="buttons">
+                                <a class="button is-primary">
+                                    <strong>Sign up</strong>
+                                </a>
+                                <a @click="loginModel = true" class="button is-light">
+                                    Log in
+                                </a>
+                            </div>
 
-                            <img class="is-rounded hover" @click="toPage('admin')" src="https://pic.codelinn.com/193.jpeg">
+                            <img v-show="user.avatarUrl" class="is-rounded hover" @click="toPage('admin')" :src="user.avatarUrl">
                         </b-navbar-item>
                     </template>
                 </b-navbar>
+
             </div>
         </div>
+        <div class="tile is-ancestor">
+            <div class="tile is-6 ">
+                <div class="tile">
+                    <b-modal :active.sync="loginModel"  has-modal-card
+                             trap-focus
+                             aria-role="dialog"
+                             aria-modal>
+                        <div class="modal-card" style="width:100%;" >
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">Login In</p>
+                            </header>
+                            <section class="modal-card-body">
+                                <a class="button" href="https://github.com/login/oauth/authorize?client_id=6efcfbe7062c229dc622" >
+                                    <font-awesome-icon :icon="['fab','github']"></font-awesome-icon>
+                                    Login With Github
+                                </a>
+                                <!--                                <b-checkbox>Remember me</b-checkbox>-->
+                            </section>
+                            <footer class="modal-card-foot">
+
+                            </footer>
+                        </div>
+
+                    </b-modal>
+                </div>
+            </div>
+            <div class="tile">
+
+            </div>
+        </div>
+
 
         <div class="tile is-ancestor">
             <div class="tile is-vertical">
@@ -185,21 +218,28 @@
                             <p>更新</p>
                         </div>
                         <div class="message-body has-text-left" style="color: #555555;">
-                            <ul style="list-style: inside">
+                            <ul style="list-style: none" >
                                 <li>
-                                    前后端分离，Vue + SpringBoot
+                                    <font-awesome-icon class="has-text-primary" icon="check-circle"></font-awesome-icon>
+                                    加入github三方登录
                                 </li>
                                 <li>
-                                    Contact Me功能迁移上线
+                                    <font-awesome-icon class="has-text-primary" icon="dot-circle"></font-awesome-icon>
+                                    后台文章编辑功能，提交暂未开放
                                 </li>
                                 <li>
-                                    首页Search、文章评论功能迁移上线
+                                    <font-awesome-icon class="has-text-primary" icon="check-circle"></font-awesome-icon>
+                                    Contact_Me功能迁移
                                 </li>
                                 <li>
-                                    后台文章编辑功能设计中...
+                                    <font-awesome-icon class="has-text-primary" icon="check-circle"></font-awesome-icon>
+                                    首页Search、评论功能迁移
                                 </li>
                                 <li>
-                                    即将加入github三方登录接入...
+                                    <font-awesome-icon class="has-text-primary" icon="check-circle"></font-awesome-icon>
+                                    <span>
+                                        前后端分离，Vue + SpringBoot
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -244,6 +284,7 @@
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
     import 'swiper/dist/css/swiper.css'
+
     export default {
         name: "index",
         components: {
@@ -253,6 +294,11 @@
         },
         data() {
             return {
+                loginModel: false,
+                formProps: {
+                    email: 'evan@you.com',
+                    password: 'testing'
+                },
                 showReview: false,
                 currentReviewId: 0,
                 blog: {
@@ -278,7 +324,12 @@
                     speed: 5000
                 },
                 imgList: [],
-                blogs: []
+                blogs: [],
+                user: {
+                    name: '',
+                    avatarUrl: '',
+                    email: ''
+                }
             }
         },
         created() {
@@ -300,13 +351,20 @@
             //     type: 'bars',
             //     background: '#7957d5'
             // })
-            this.axios.get('/api/blog/getUserBlogs?userId=1').then((res) => {
+            this.axios.get('/api/blog/getUserBlogs?userId=').then((res) => {
                 this.blogs = res.data.data.list
                 // indexLoading.close()
                 this.loading = false
             }).catch(error => {
                 window.console.info(error)
             })
+            const token = sessionStorage.getItem('token');
+            if(token){
+                this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
+                    this.user = res.data.data
+                }).catch(() => {
+                })
+            }
         },
         methods: {
             query() {
