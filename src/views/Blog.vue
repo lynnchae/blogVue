@@ -195,7 +195,7 @@
 
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img class="is-rounded" src="https://pic.codelinn.com//random/header5.png">
+                                <img class="is-rounded" :src="$store.getters.userInfo.email ? $store.getters.userInfo.avatarUrl : 'https://pic.codelinn.com//random/header5.png'">
                             </p>
                         </figure>
                         <div class="media-content">
@@ -204,14 +204,14 @@
                                     <div class="tile is-parent" style="margin-top: 5px">
                                         <div class="tile is-child is-2">
                                             <b-field label="Name" label-position="on-border">
-                                                <b-input v-model="user"></b-input>
+                                                <b-input v-model="user" :disabled="user"></b-input>
                                             </b-field>
                                         </div>
                                     </div>
                                     <div class="tile is-parent">
                                         <div class="tile is-child is-3">
                                             <b-field label="Email" label-position="on-border">
-                                                <b-input v-model="userEmail"></b-input>
+                                                <b-input v-model="userEmail" :disabled="userEmail"></b-input>
                                             </b-field>
                                         </div>
                                     </div>
@@ -266,8 +266,8 @@ export default {
                 comment: '',
                 parentId: ''
             },
-            user: '',
-            userEmail: '',
+            user: this.$store.getters.userInfo.name,
+            userEmail: this.$store.getters.userInfo.email,
             parentId: 0
         };
     },

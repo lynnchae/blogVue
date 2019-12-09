@@ -79,15 +79,16 @@
                     <template slot="end">
                         <b-navbar-item tag="div">
                             <div v-show="!user.avatarUrl" class="buttons">
-                                <a class="button is-primary">
-                                    <strong>Sign up</strong>
-                                </a>
+<!--                                <a class="button is-primary">-->
+<!--                                    <strong>Sign up</strong>-->
+<!--                                </a>-->
                                 <a @click="loginModel = true" class="button is-light">
                                     Log in
                                 </a>
                             </div>
-
-                            <img v-show="user.avatarUrl" class="is-rounded hover" @click="toPage('admin')" :src="user.avatarUrl">
+                            <div v-if="user.avatarUrl">
+                                <img  class="is-rounded hover" @click="toPage('admin')" :src="user.avatarUrl">
+                            </div>
                         </b-navbar-item>
                     </template>
                 </b-navbar>
@@ -101,18 +102,20 @@
                              trap-focus
                              aria-role="dialog"
                              aria-modal>
-                        <div class="modal-card" style="width:100%;" >
+                        <div class="modal-card" style="width:auto;" >
                             <header class="modal-card-head">
                                 <p class="modal-card-title">Login In</p>
                             </header>
                             <section class="modal-card-body">
-                                <a class="button" href="https://github.com/login/oauth/authorize?client_id=6efcfbe7062c229dc622" >
-                                    <font-awesome-icon :icon="['fab','github']"></font-awesome-icon>
-                                    Login With Github
+                                <a class="button is-medium has-icons-left" href="https://github.com/login/oauth/authorize?client_id=6efcfbe7062c229dc622" >
+                                    <span class="icon">
+                                      <font-awesome-icon :icon="['fab','github']"></font-awesome-icon>
+                                    </span>
+                                    <span>Login with <strong>GitHub</strong></span>
                                 </a>
                                 <!--                                <b-checkbox>Remember me</b-checkbox>-->
                             </section>
-                            <footer class="modal-card-foot">
+                            <footer class="modal-card-foot has-no-border" style="background-color: white;border-top: white;">
 
                             </footer>
                         </div>
@@ -362,6 +365,8 @@
             if(token){
                 this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
                     this.user = res.data.data
+                    this.$store.commit('setToken',res.data.data.token)
+                    this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
                 })
             }

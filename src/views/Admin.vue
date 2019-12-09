@@ -18,25 +18,33 @@
                     <div class="tile is-12 is-parent" style="margin-top: 20px">
                         <div class="tile is-child is-2" style="border-right: 1px #7957d5;box-shadow: rgba(121, 87, 213, 0.3) 3px 0px 0px 0px">
                             <aside class="menu has-text-left" >
-                                <ul class="menu-list">
-                                    <li>
-                                        <a v-bind:class="{'is-active':currentMenu == 'User'}" @click="tab('User')" >
-                                            <font-awesome-icon icon="user"></font-awesome-icon> {{user.name | nameFilter}}
-                                        </a>
-                                    </li>
-                                    <p class="menu-label">
-                                        Personnal Center
-                                    </p>
-                                    <li>
-                                        <a class=""><font-awesome-icon icon="blog"></font-awesome-icon> Blogs</a>
-                                        <ul>
-                                            <li><a v-bind:class="{'is-active':currentMenu == 'Posted'}" @click="tab('Posted')" class="">
-                                                <font-awesome-icon icon="paper-plane"></font-awesome-icon> Posted</a></li>
-                                            <li><a v-bind:class="{'is-active':currentMenu == 'Edit'}" @click="tab('Edit')" >
-                                                <font-awesome-icon icon="pencil-alt"></font-awesome-icon> Edit</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <b-menu>
+                                    <b-menu-list label="Menu">
+                                        <b-menu-item icon="user" :active="currentMenu === 'User'" @click="tab('User')" :label="user.name | nameFilter"></b-menu-item>
+                                        <b-menu-item
+                                                icon="tag"
+                                                :active="isActive"
+                                                :expanded="isActive"
+                                                @click="isActive = !isActive">
+                                            <template slot="label" slot-scope="props">
+                                                Personal Center
+                                                <b-icon
+                                                        class="is-pulled-right"
+                                                        :icon="props.expanded ? 'angle-down' : 'angle-up'">
+                                                </b-icon>
+                                            </template>
+                                            <b-menu-item icon="paper-plane" @click="tab('Posted')" label="Posted"></b-menu-item>
+                                            <b-menu-item icon="pencil-alt"  @click="tab('Edit')" label="Edit"></b-menu-item>
+                                        </b-menu-item>
+<!--                                        <b-menu-item icon="account" label="My Account">-->
+<!--                                            <b-menu-item label="Account data"></b-menu-item>-->
+<!--                                            <b-menu-item label="Addresses"></b-menu-item>-->
+<!--                                        </b-menu-item>-->
+                                    </b-menu-list>
+                                    <b-menu-list label="Actions">
+                                        <b-menu-item icon="sign-out-alt" @click="signOut" label="Logout"></b-menu-item>
+                                    </b-menu-list>
+                                </b-menu>
                             </aside>
                         </div>
                         <div class="tile is-10" >
@@ -87,7 +95,7 @@
 
                             <div v-show="currentMenu === 'Posted'"  class="tile is-vertical is-parent">
                                 <div class="tile is-child is-8 control" v-for="item in blogs" :key="item.id">
-                                    <div class="box">
+                                    <div class="box" style="box-shadow: 2px 0px 10px 1px rgba(10,10,10,.1)!important;">
                                         <article class="media">
                                             <div class="media-content">
                                                 <div class="content">
@@ -113,8 +121,8 @@
                                 </div>
                             </div>
 
-                            <div v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
-                                <div class="box card has-text-left">
+                            <div ref="user" v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
+                                <div class="box card has-text-left" >
                                     <div class="card-content">
                                         <div class="media">
                                             <div class="media-left">
@@ -132,7 +140,7 @@
                                             <div class="level-item level-right">
                                                 <div class=" content">
                                                     <br/>
-                                                    <time datetime="2016-1-1">Registered at <strong style="color:#7957d5">{{user.createTime}}</strong></time>
+                                                    <time v-if="user.createTime" datetime="2016-1-1">Registered at <strong  style="color:#7957d5">{{user.createTime}}</strong></time>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,6 +180,7 @@
         },
         data() {
             return {
+                userLoading: null,
                 loading: true,
                 currentMenu: '',
                 blog: {
@@ -185,9 +194,10 @@
                 user: {
                     userId: 0,
                     name: '',
-                    avatarUrl: '',
+                    avatarUrl: 'https://pic.codelinn.com//random/header5.png',
                     email: ''
-                }
+                },
+                isActive: false
             }
         },
         methods: {
@@ -237,30 +247,58 @@
                     }
                     // this.indexLoading.close()
                 })
+            },
+            signOut(){
+                this.$buefy.dialog.confirm({
+                    message: 'Sure to Log Out?',
+                    onConfirm: () => {
+                        sessionStorage.removeItem('token')
+                        sessionStorage.removeItem('userInfo')
+                        this.$router.push('/')
+                    }
+                })
+
             }
         },
         mounted() {
-            const token = sessionStorage.getItem('token');
+            const token = sessionStorage.getItem('token')
             if(token){
+                this.userLoading = this.$loading({
+                    target: this.$refs.user,
+                    text: 'Loading',
+                    type: 'bars',
+                    background: '#7957d5'
+                })
                 this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
                     this.user = res.data.data
-                    window.console.info(this.user)
+                    this.$store.commit('setToken',res.data.data.token)
+                    this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
+                }).finally(() => {
+                    this.userLoading.close()
                 })
             }
             const code = this.$route.query.code;
             if(code){
+                this.userLoading = this.$loading({
+                    target: this.$refs.user,
+                    text: 'Loading',
+                    type: 'bars',
+                    background: '#7957d5'
+                })
                 if (location.href.indexOf("?code=") !== -1) {
                     const newUrl = location.href.split("?")[0];
                     history.pushState('', '', newUrl);
                 }
                 this.axios.post('/api/user/auth/github?code='+ code).then((res) => {
                     this.user = res.data.data
-                    sessionStorage.setItem('token',res.data.data.token)
+                    this.$store.commit('setToken',res.data.data.token)
+                    this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
+                }).finally(()=> {
+                    this.userLoading.close()
                 })
             }
-
             this.tab('User')
             this.$nextTick(() => {
                 this.loading = false
