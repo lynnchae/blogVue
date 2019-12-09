@@ -201,6 +201,7 @@
                 loading: true,
                 currentMenu: '',
                 blog: {
+                    id: null,
                     title: '',
                     tags: '',
                     content: '',
@@ -252,18 +253,11 @@
                     if(userInfo && userInfo.userId){
                         this.blog.userId = userInfo.userId
                         this.axios.post('/api/blog/sBlog',this.blog,{
-                            header: {
+                            headers: {
                                 token: this.$store.getters.token
                             }
                         }).then(res => {
                             if(res && res.data.data === true){
-                                this.blog = {
-                                    title: '',
-                                        tags: '',
-                                        content: '',
-                                        done: 1,
-                                        userId: null
-                                },
                                 this.$buefy.notification.open({
                                     duration: 3000,
                                     message: '提交成功！！',
@@ -273,6 +267,7 @@
                             }
                         }).finally(() => {
                             this.buttonLoading = false
+                            this.resetBlog()
                         })
                     }
                 })
@@ -285,6 +280,7 @@
                 return true
             },
             tab(menu){
+                this.resetBlog()
                 this.currentMenu = menu
                 if(menu === 'Posted'){
                     this.axios.get('/api/blog/getUserBlogs?userId=' + this.user.userId).then((res) => {
@@ -310,15 +306,17 @@
                             type: 'is-warning'
                         })
                     }else {
+                        this.tab('Edit')
                         this.blog.title = res.data.title
                         this.blog.content = res.data.contentOrigin
                         this.blog.tags = res.data.tags
-                        this.tab('Edit')
+                        this.blog.id = id
                     }
                     // this.indexLoading.close()
                 })
             },
             signOut(){
+                this.currentMenu = 'Logout'
                 this.$buefy.dialog.confirm({
                     message: 'Sure to Log Out?',
                     onConfirm: () => {
@@ -327,7 +325,17 @@
                         this.$router.push('/')
                     }
                 })
-
+                this.resetBlog()
+            },
+            resetBlog(){
+                this.blog = {
+                    id: null,
+                    title: '',
+                    tags: '',
+                    content: '',
+                    done: 1,
+                    userId: null
+                }
             }
         },
         mounted() {
