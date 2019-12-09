@@ -53,9 +53,15 @@
                                     <b-field grouped>
                                         <b-field expanded>
                                             <p class="control has-icons-left ">
-                                                <b-input v-model="blog.title"  placeholder="Blog Title"
-                                                         type="text">
-                                                </b-input>
+                                                <b-field>
+                                                    <b-input placeholder="title"
+                                                             type="text"
+                                                             v-model="blog.title"
+                                                             required
+                                                             validation-message="title is required!">
+                                                    </b-input>
+
+                                                </b-field>
                                                 <span class="icon is-small has-text-primary is-left">
                                                     <font-awesome-icon icon="leaf"></font-awesome-icon>
                                                 </span>
@@ -75,10 +81,18 @@
                                 <div class="tile is-child is-2">
                                     <div class="field">
                                         <p class="control has-icons-left has-icons-right">
-                                            <input v-model="blog.tags" class="input" type="text" placeholder="Tags">
+                                            <b-field>
+                                                <b-input placeholder="tags"
+                                                         type="text"
+                                                         v-model="blog.tags"
+                                                         required
+                                                         validation-message="tag is required!">
+                                                </b-input>
+
+                                            </b-field>
                                             <span class="icon is-small has-text-primary is-left">
-                                      <font-awesome-icon icon="tag"></font-awesome-icon>
-                                    </span>
+                                                <font-awesome-icon icon="tag"></font-awesome-icon>
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
@@ -213,15 +227,25 @@
             // 提交
             submit(){
                 this.buttonLoading = true
+                if(this.blog.title.trim() === '' || this.blog.tags.trim() === '' || this.blog.content.trim() === ''){
+                    this.$buefy.notification.open({
+                        duration: 3000,
+                        message: 'have you filled all things?!',
+                        type: 'is-warning'
+                    })
+                    this.buttonLoading = false
+                    return;
+                }
                 if(!this.checkLogin()){
                     this.$buefy.notification.open({
-                        duration: 8000,
+                        duration: 4000,
                         message: 'Log in is required！',
                         type: 'is-warning'
                     })
                     this.buttonLoading = false
                     return;
                 }
+
                 const userInfo = getUserInfo(this.$store.getters.token)
                 userInfo.then((res) => {
                     const userInfo = res
@@ -272,7 +296,7 @@
                 }
                 if(menu==='Edit' && !this.checkLogin()){
                     this.$buefy.notification.open({
-                        duration: 8000,
+                        duration: 4000,
                         message: 'Log in is required！',
                         type: 'is-warning'
                     })

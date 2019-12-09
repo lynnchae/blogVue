@@ -232,7 +232,7 @@
                                 </li>
                                 <li>
                                     <font-awesome-icon class="has-text-primary" icon="dot-circle"></font-awesome-icon>
-                                    后台文章编辑功能，提交暂未开放
+                                    发布博文功能
                                 </li>
                                 <li>
                                     <font-awesome-icon class="has-text-primary" icon="check-circle"></font-awesome-icon>
@@ -301,11 +301,8 @@
         },
         data() {
             return {
+                nothingShow: true,
                 loginModel: false,
-                formProps: {
-                    email: 'evan@you.com',
-                    password: 'testing'
-                },
                 showReview: false,
                 currentReviewId: 0,
                 blog: {
@@ -358,12 +355,17 @@
             //     type: 'bars',
             //     background: '#7957d5'
             // })
-            this.axios.get('/api/blog/getUserBlogs?userId=').then((res) => {
+            this.axios.get('/api/blog/getUserBlogs?userId=',{timeout:5000}).then((res) => {
                 this.blogs = res.data.data.list
                 // indexLoading.close()
-                this.loading = false
+
             }).catch(error => {
                 window.console.info(error)
+            }).finally(() => {
+                this.loading = false
+                if(this.blogs.length == 0){
+                    this.nothingShow = true
+                }
             })
             const token = sessionStorage.getItem('token');
             if(token){
@@ -372,6 +374,8 @@
                     this.$store.commit('setToken',res.data.data.token)
                     this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
+                }).finally(() => {
+                    this.loading = false
                 })
             }
         },
