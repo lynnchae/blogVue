@@ -87,7 +87,7 @@
                                 </a>
                             </div>
                             <div v-if="user.avatarUrl">
-                                <img  class="is-rounded hover" @click="toPage('admin')" :src="user.avatarUrl">
+                                <img @click="toPage('admin')" :src="user.avatarUrl">
                             </div>
                         </b-navbar-item>
                     </template>

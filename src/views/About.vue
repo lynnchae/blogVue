@@ -7,7 +7,7 @@
     }
 
     .about-hero {
-        background: url('https://pic.codelinn.com/10.jpg') no-repeat center center;
+        background: url('https://pic.codelinn.com/blog/background/willian-justen-de-vasconcellos-FfpZPMVV_M8-unsplash.jpg') no-repeat center center;
         background-size: 100% 100%;
         height: 100%;
         position: fixed;
@@ -57,8 +57,9 @@
                     <div class="tile">
                         <b-navbar class="is-transparent navbar is-fixed-top" :mobile-burger="mobileBurger">
                             <template slot="brand">
-                                <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                                    <img src="https://pic.codelinn.com/logo.png"/>
+                                <b-navbar-item class="is-medium" tag="router-link" :to="{ path: '/' }">
+<!--                                    <img src="https://pic.codelinn.com/logo.png"/>-->
+                                    <font-awesome-icon class="has-text-white" :icon="['fas','home']"></font-awesome-icon>
                                 </b-navbar-item>
                             </template>
                         </b-navbar>
