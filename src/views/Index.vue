@@ -87,7 +87,11 @@
                                 </a>
                             </div>
                             <div v-if="user.avatarUrl">
-                                <img @click="toPage('admin')" :src="user.avatarUrl">
+                                <b-tooltip class="hover" :label="'Hi! '+user.name"
+                                           position="is-bottom"
+                                           animated>
+                                    <img @click="toPage('admin')" :src="user.avatarUrl">
+                                </b-tooltip>
                             </div>
                         </b-navbar-item>
                     </template>

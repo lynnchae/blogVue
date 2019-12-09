@@ -195,7 +195,7 @@
 
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img class="is-rounded" :src="$store.getters.userInfo.email ? $store.getters.userInfo.avatarUrl : 'https://pic.codelinn.com//random/header5.png'">
+                                <img class="is-rounded" :src="$store.getters.userInfo ? $store.getters.userInfo.avatarUrl : 'https://pic.codelinn.com//random/header5.png'">
                             </p>
                         </figure>
                         <div class="media-content">
@@ -204,14 +204,14 @@
                                     <div class="tile is-parent" style="margin-top: 5px">
                                         <div class="tile is-child is-2">
                                             <b-field label="Name" label-position="on-border">
-                                                <b-input v-model="user" :disabled="user"></b-input>
+                                                <b-input v-model="user" :disabled="$store.getters.userInfo"></b-input>
                                             </b-field>
                                         </div>
                                     </div>
                                     <div class="tile is-parent">
                                         <div class="tile is-child is-3">
                                             <b-field label="Email" label-position="on-border">
-                                                <b-input v-model="userEmail" :disabled="userEmail"></b-input>
+                                                <b-input v-model="userEmail" :disabled="$store.getters.userInfo"></b-input>
                                             </b-field>
                                         </div>
                                     </div>
@@ -264,18 +264,20 @@ export default {
                 commenterEmail: '',
                 replyTo: '',
                 comment: '',
-                parentId: ''
+                parentId: '',
+                visitorId: null
             },
-            user: this.$store.getters.userInfo.name,
-            userEmail: this.$store.getters.userInfo.email,
+            user: this.$store.getters.userInfo ? this.$store.getters.userInfo.name : '',
+            userEmail: this.$store.getters.userInfo ? this.$store.getters.userInfo.email : '',
+            userId: this.$store.getters.userInfo ? this.$store.getters.userInfo.userId : '',
             parentId: 0
         };
     },
     created() {
-        if(this.$cookies.isKey('commenter')){
+        if(!this.$store.getters.userInfo && this.$cookies.isKey('commenter')){
             this.user = this.$cookies.get('commenter')
         }
-        if(this.$cookies.isKey('commenterEmail')){
+        if(!this.$store.getters.userInfo && this.$cookies.isKey('commenterEmail')){
             this.userEmail = this.$cookies.get('commenterEmail')
         }
         // this.indexLoading = this.$loading({
@@ -305,7 +307,7 @@ export default {
                     this.title = res.data.title
                     this.content = res.data.content
                     this.toc = res.data.toc
-                    if(res.data.comments){
+                    if(res.data.comments && res.data.comments.length > 0){
                         this.comments = res.data.comments
                     }
                     this.loading = false
@@ -329,7 +331,8 @@ export default {
                 commenterEmail: '',
                 replyTo: '',
                 comment: '',
-                parentId: ''
+                parentId: '',
+                visitorId: null
             }
             this.newComment = ''
             this.parentId = 0
@@ -347,6 +350,7 @@ export default {
             this.comment.comment = this.newComment
             this.comment.replyTo = this.replyTo
             this.comment.parentId = this.parentId
+            this.comment.visitorId = this.userId
             this.axios.post('/api/comment/sendComment',this.comment).then(res => {
                 this.$buefy.notification.open({
                     message: '评论成功！',
@@ -365,6 +369,10 @@ export default {
             this.comment.comment = this.newComment
             this.comment.replyTo = ''
             this.comment.parentId = 0
+            this.comment.visitorId = this.userId
+            this.$cookies.set('commenter',this.user,'30D')
+            this.$cookies.set('commenterEmail',this.userEmail,'30D')
+            window.console.info(this.userId)
             this.axios.post('/api/comment/sendComment',this.comment).then(res => {
                 this.$buefy.notification.open({
                     message: '评论成功！',

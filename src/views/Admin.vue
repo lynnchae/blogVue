@@ -121,7 +121,7 @@
                                 </div>
                             </div>
 
-                            <div ref="user" v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
+                            <div id="user" v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
                                 <div class="box card has-text-left" >
                                     <div class="card-content">
                                         <div class="media">
@@ -146,6 +146,7 @@
                                         </div>
 
                                     </div>
+                                    <b-loading :is-full-page="isFullPage" :active.sync="isLoading" ></b-loading>
                                 </div>
                             </div>
 
@@ -180,6 +181,8 @@
         },
         data() {
             return {
+                isFullPage: false,
+                isLoading: false,
                 userLoading: null,
                 loading: true,
                 currentMenu: '',
@@ -263,29 +266,19 @@
         mounted() {
             const token = sessionStorage.getItem('token')
             if(token){
-                this.userLoading = this.$loading({
-                    target: this.$refs.user,
-                    text: 'Loading',
-                    type: 'bars',
-                    background: '#7957d5'
-                })
+                this.isLoading = true
                 this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
                     this.user = res.data.data
                     this.$store.commit('setToken',res.data.data.token)
                     this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
                 }).finally(() => {
-                    this.userLoading.close()
+                    this.isLoading = false
                 })
             }
             const code = this.$route.query.code;
             if(code){
-                this.userLoading = this.$loading({
-                    target: this.$refs.user,
-                    text: 'Loading',
-                    type: 'bars',
-                    background: '#7957d5'
-                })
+                this.isLoading = true
                 if (location.href.indexOf("?code=") !== -1) {
                     const newUrl = location.href.split("?")[0];
                     history.pushState('', '', newUrl);
@@ -296,7 +289,7 @@
                     this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
                 }).finally(()=> {
-                    this.userLoading.close()
+                    this.isLoading = false
                 })
             }
             this.tab('User')
