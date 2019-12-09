@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store =  new Vuex.Store({
   state: {
     token: '',
     userInfo: {}
@@ -32,6 +32,13 @@ export default new Vuex.Store({
       // @ts-ignore
       state.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
       return state.userInfo
+    },
+    token: function (state) {
+      // @ts-ignore
+      state.token = sessionStorage.getItem('token')
+      return state.token
     }
   }
 })
+
+export default store

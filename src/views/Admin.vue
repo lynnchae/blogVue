@@ -19,22 +19,22 @@
                         <div class="tile is-child is-2" style="border-right: 1px #7957d5;box-shadow: rgba(121, 87, 213, 0.3) 3px 0px 0px 0px">
                             <aside class="menu has-text-left" >
                                 <b-menu>
-                                    <b-menu-list label="Menu">
+                                    <b-menu-list label="Menu" >
                                         <b-menu-item icon="user" :active="currentMenu === 'User'" @click="tab('User')" :label="user.name | nameFilter"></b-menu-item>
                                         <b-menu-item
                                                 icon="tag"
                                                 :active="isActive"
                                                 :expanded="isActive"
-                                                @click="isActive = !isActive">
+                                                @click="isActive = !isActive" >
                                             <template slot="label" slot-scope="props">
                                                 Personal Center
                                                 <b-icon
-                                                        class="is-pulled-right"
+                                                        class=" is-pulled-right"
                                                         :icon="props.expanded ? 'angle-down' : 'angle-up'">
                                                 </b-icon>
                                             </template>
-                                            <b-menu-item icon="paper-plane" @click="tab('Posted')" label="Posted"></b-menu-item>
-                                            <b-menu-item icon="pencil-alt"  @click="tab('Edit')" label="Edit"></b-menu-item>
+                                            <b-menu-item icon="paper-plane" :active="currentMenu === 'Posted'" @click="tab('Posted')" label="Posted"></b-menu-item>
+                                            <b-menu-item icon="pencil-alt" :active="currentMenu === 'Edit'" @click="tab('Edit')" label="Edit" ></b-menu-item>
                                         </b-menu-item>
 <!--                                        <b-menu-item icon="account" label="My Account">-->
 <!--                                            <b-menu-item label="Account data"></b-menu-item>-->
@@ -62,7 +62,7 @@
                                             </p>
                                         </b-field>
                                         <b-field expanded>
-                                            <button v-bind:class="{'is-loading': buttonLoading}" class="button is-primary" disabled @click="submit">
+                                            <button v-bind:class="{'is-loading': buttonLoading}" class="button is-primary" @click="submit">
                                                 <b-icon
                                                         pack="fas"
                                                         icon="paper-plane"
@@ -163,7 +163,7 @@
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
     import BField from "buefy/src/components/field/Field";
-
+    import {getUserInfo} from "../api/api"
     export default {
         filters: {
             nameFilter(name){
@@ -190,7 +190,8 @@
                     title: '',
                     tags: '',
                     content: '',
-                    done: 1
+                    done: 1,
+                    userId: null
                 },
                 buttonLoading: false,
                 blogs: [],
@@ -212,17 +213,52 @@
             // 提交
             submit(){
                 this.buttonLoading = true
-                this.axios.post('/api/blog/ssssBlog',this.blog).then(res => {
-                    if(res && res.data.data === true){
-                        this.$buefy.notification.open({
-                            message: '提交成功！！',
-                            type: 'is-success'
-                        })
-                        this.tab('Posted')
-                    }
-                }).finally(() => {
+                if(!this.checkLogin()){
+                    this.$buefy.notification.open({
+                        duration: 8000,
+                        message: 'Log in is required！',
+                        type: 'is-warning'
+                    })
                     this.buttonLoading = false
+                    return;
+                }
+                const userInfo = getUserInfo(this.$store.getters.token)
+                userInfo.then((res) => {
+                    const userInfo = res
+                    if(userInfo && userInfo.userId){
+                        this.blog.userId = userInfo.userId
+                        this.axios.post('/api/blog/sBlog',this.blog,{
+                            header: {
+                                token: this.$store.getters.token
+                            }
+                        }).then(res => {
+                            if(res && res.data.data === true){
+                                this.blog = {
+                                    title: '',
+                                        tags: '',
+                                        content: '',
+                                        done: 1,
+                                        userId: null
+                                },
+                                this.$buefy.notification.open({
+                                    duration: 3000,
+                                    message: '提交成功！！',
+                                    type: 'is-success'
+                                })
+                                this.tab('Posted')
+                            }
+                        }).finally(() => {
+                            this.buttonLoading = false
+                        })
+                    }
                 })
+
+            },
+            checkLogin(){
+                if(this.$store.getters.userInfo === null){
+                    return false
+                }
+                return true
             },
             tab(menu){
                 this.currentMenu = menu
@@ -232,6 +268,13 @@
                         // indexLoading.close()
                         // this.loading = false
                     }).catch(() => {
+                    })
+                }
+                if(menu==='Edit' && !this.checkLogin()){
+                    this.$buefy.notification.open({
+                        duration: 8000,
+                        message: 'Log in is required！',
+                        type: 'is-warning'
                     })
                 }
             },
