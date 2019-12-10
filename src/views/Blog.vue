@@ -125,7 +125,7 @@
                             </div>
                             <br>
                                 <figure v-show="currentClickCommentId == item.id" class="media-content" >
-                                    <div class="tile is-ancestor is-vertical">
+                                    <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
                                         <div class="tile is-parent" style="margin-top: 5px">
                                             <div class="tile is-child is-2">
                                                 <b-field label="Name" label-position="on-border">
@@ -173,7 +173,7 @@
                                         </p>
                                     </div>
                                         <figure v-show="currentClickCommentId == c.id" class="media-content" >
-                                            <div class="tile is-ancestor is-vertical">
+                                            <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
                                                 <div class="tile is-parent" style="margin-top: 5px">
                                                     <div class="tile is-child is-2">
                                                         <b-field label="Name" label-position="on-border">
@@ -215,18 +215,18 @@
                         </figure>
                         <div class="media-content">
                             <figure class="media-content" >
-                                <div class="tile is-ancestor is-vertical">
+                                <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
                                     <div class="tile is-parent" style="margin-top: 5px">
                                         <div class="tile is-child is-2">
                                             <b-field label="Name" label-position="on-border">
-                                                <b-input v-model="user" :disabled="$store.getters.userInfo"></b-input>
+                                                <b-input v-model="user" ></b-input>
                                             </b-field>
                                         </div>
                                     </div>
                                     <div class="tile is-parent">
                                         <div class="tile is-child is-3">
                                             <b-field label="Email" label-position="on-border">
-                                                <b-input v-model="userEmail" :disabled="$store.getters.userInfo"></b-input>
+                                                <b-input v-model="userEmail"></b-input>
                                             </b-field>
                                         </div>
                                     </div>
