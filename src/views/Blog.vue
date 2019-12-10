@@ -72,6 +72,21 @@
                     </span>
                     </div>
                 </div>
+                <div class="tile is-parent is-vertical has-text-right">
+                    <div class="tile is-child content">
+                        <div class="md-content margin-0-50" >
+                            <span>
+                                <font-awesome-icon :icon="['fab','markdown']"></font-awesome-icon>
+                            </span>
+                        </div>
+                        <div class="md-content margin-0-50" >
+                            <span>
+                                {{this.createTime}}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="tile is-parent is-vertical has-text-left">
                     <div class="tile is-child content">
                         <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
@@ -88,7 +103,7 @@
 
             <div class="tile is-parent is-vertical margin-0-50" >
                 <div class="tile is-child has-text-left">
-                    <span class="title is-large">评论区</span>
+                    <span class="title is-large">Comments</span>
                 </div>
                 <div class="tile is-child">
                     <article class="media" v-for="item in comments" :key="item.id">
@@ -245,6 +260,7 @@ export default {
     components: {TocMenu},
     data(){
         return {
+            createTime: null,
             loading: true,
             indexLoading: null,
             fullpage: false,
@@ -307,6 +323,7 @@ export default {
                     this.title = res.data.title
                     this.content = res.data.content
                     this.toc = res.data.toc
+                    this.createTime = res.data.createTime
                     if(res.data.comments && res.data.comments.length > 0){
                         this.comments = res.data.comments
                     }
@@ -353,7 +370,7 @@ export default {
             this.comment.visitorId = this.userId
             this.axios.post('/api/comment/sendComment',this.comment).then(res => {
                 this.$buefy.notification.open({
-                    message: '评论成功！',
+                    message: 'comment success！',
                     type: 'is-success'
                 })
                 this.getBlog()
@@ -375,7 +392,7 @@ export default {
             window.console.info(this.userId)
             this.axios.post('/api/comment/sendComment',this.comment).then(res => {
                 this.$buefy.notification.open({
-                    message: '评论成功！',
+                    message: 'comment success！',
                     type: 'is-success'
                 })
                 this.getBlog()

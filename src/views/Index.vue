@@ -41,7 +41,7 @@
         <div id="quickviewDefault" v-bind:class="{'is-active' : showReview}" class="quickview" style="border-left: 3px solid #7957d5;box-shadow: rgba(121, 87, 213, 0.3) -3px 0px 5px 0px">
             <header class="quickview-header">
                 <p class="title">{{blog.title}}</p>
-                <span class="delete" @click="showReview = false"></span>
+                <span class="delete" @click="review(currentReviewId)"></span>
             </header>
 
             <div class="quickview-body">
