@@ -161,16 +161,13 @@
                     <div class="tile box is-vertical" v-for="item in blogs" :key="item.id">
                         <div class="tile is-child">
                             <article>
-                                <div class="columns">
-                                    <div class="column is-one-quarter" style="align-self: center">
+                                <div class="columns is-mobile">
+                                    <div class="column" style="align-self: center">
                                         <span class="subtitle">{{item.createTime}}</span>
-                                    </div>
-                                    <div class="column">
-                                        <span class="has-text-primary hover">
+                                        <span style="padding-left: 10px" class="has-text-primary hover">
                                             <font-awesome-icon v-if="currentReviewId === item.id" class="is-primary" :icon="['fa','feather-alt']" @click="review(item.id)"></font-awesome-icon>
                                             <font-awesome-icon v-if="currentReviewId !== item.id" class="is-primary" :icon="['fa','feather']" @click="review(item.id)"></font-awesome-icon>
                                         </span>
-<!--                                        <button class="button is-primary" >review</button>-->
                                     </div>
                                 </div>
                                 <div class="tile is-vertical">
@@ -186,26 +183,27 @@
 
                             </article>
                         </div>
-                        <div class="tile is-child is-3">
                             <nav class="level is-mobile">
                                 <div class="level-left is-8">
-
-                                <div class="level-item has-text-left">
-                                    <div>
-                                        <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
-                                        <p ></p>
+                                    <div class="level-item has-text-left">
+                                        <div>
+                                            <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
+                                            <p ></p>
+                                        </div>
+                                    </div>
+                                    <div class="level-item has-text-centered">
+                                        <div>
+                                            <p class="heading"><font-awesome-icon icon="comment"></font-awesome-icon> ({{item.comments}})</p>
+                                            <p ></p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading"><font-awesome-icon icon="comment"></font-awesome-icon> ({{item.comments}})</p>
-                                        <p ></p>
+                                <div class="level-right" >
+                                    <div class="level-item has-text-right">
+                                        <p>Posted by <strong>{{item.name}}</strong></p>
                                     </div>
                                 </div>
-                                </div>
-
                             </nav>
-                        </div>
                     </div>
                 </div>
             </div>

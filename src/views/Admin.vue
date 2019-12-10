@@ -257,13 +257,22 @@
                                 token: this.$store.getters.token
                             }
                         }).then(res => {
-                            if(res && res.data.data === true){
+                            if(res ){
+                                if(res.data.data === true){
+                                    this.$buefy.notification.open({
+                                        duration: 3000,
+                                        message: 'submit success！！',
+                                        type: 'is-success'
+                                    })
+                                    this.tab('Posted')
+                                    return
+                                }
                                 this.$buefy.notification.open({
                                     duration: 3000,
-                                    message: '提交成功！！',
-                                    type: 'is-success'
+                                    message: res.data.message,
+                                    type: 'is-warning'
                                 })
-                                this.tab('Posted')
+
                             }
                         }).finally(() => {
                             this.buttonLoading = false
@@ -302,7 +311,7 @@
                 this.axios.get('/api/blog/gBlog?id='+id).then(res => {
                     if(res.data.code){
                         this.$buefy.notification.open({
-                            message: '没有找到相关文章！',
+                            message: 'none blog is found！',
                             type: 'is-warning'
                         })
                     }else {
