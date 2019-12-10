@@ -367,11 +367,17 @@
                     const newUrl = location.href.split("?")[0];
                     history.pushState('', '', newUrl);
                 }
-                this.axios.post('/api/user/auth/github?code='+ code).then((res) => {
+                this.axios.post('/api/user/auth/github?code='+ code,{
+                    timeout:6000
+                }).then((res) => {
                     this.user = res.data.data
                     this.$store.commit('setToken',res.data.data.token)
                     this.$store.commit('setUserInfo',res.data.data)
                 }).catch(() => {
+                    this.$buefy.notification.open({
+                        message: 'log in failed！',
+                        type: 'is-warning'
+                    })
                 }).finally(()=> {
                     this.isLoading = false
                 })
