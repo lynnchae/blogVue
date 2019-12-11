@@ -47,8 +47,8 @@
                                 </b-menu>
                             </aside>
                         </div>
-                        <div class="tile is-10" >
-                            <div v-show="currentMenu === 'Edit'"  class="tile is-vertical is-parent">
+                        <div class="tile is-child is-10" >
+                            <div v-if="currentMenu === 'Edit'"  class="tile is-vertical is-parent">
                                 <div class="tile is-child control">
                                     <b-field grouped>
                                         <b-field expanded>
@@ -107,7 +107,7 @@
                             </div>
 
 
-                            <div v-show="currentMenu === 'Posted'"  class="tile is-vertical is-parent">
+                            <div v-if="currentMenu === 'Posted'"  class="tile is-vertical is-parent">
                                 <div class="tile is-child is-8 control" v-for="item in blogs" :key="item.id">
                                     <div class="box" style="box-shadow: 2px 0px 10px 1px rgba(10,10,10,.1)!important;">
                                         <article class="media">
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
 
-                            <div id="user" v-show="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
+                            <div id="user" v-if="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
                                 <div class="box card has-text-left" >
                                     <div class="card-content">
                                         <div class="media">
@@ -247,14 +247,14 @@
                     return;
                 }
 
-                const userInfo = getUserInfo(this.$store.getters.token)
+                const userInfo = getUserInfo(this.$cookies.get('token'))
                 userInfo.then((res) => {
                     const userInfo = res
                     if(userInfo && userInfo.userId){
                         this.blog.userId = userInfo.userId
                         this.axios.post('/api/blog/sBlog',this.blog,{
                             headers: {
-                                token: this.$store.getters.token
+                                token: this.$cookies.get('token')
                             }
                         }).then(res => {
                             if(res ){
@@ -283,7 +283,7 @@
 
             },
             checkLogin(){
-                if(this.$store.getters.userInfo === null){
+                if(!this.$cookies.isKey('token')){
                     return false
                 }
                 return true
@@ -329,8 +329,8 @@
                 this.$buefy.dialog.confirm({
                     message: 'Sure to Log Out?',
                     onConfirm: () => {
-                        sessionStorage.removeItem('token')
-                        sessionStorage.removeItem('userInfo')
+                        this.$cookies.remove('token')
+                        this.$cookies.remove('userInfo')
                         this.$router.push('/')
                     }
                 })
@@ -348,13 +348,14 @@
             }
         },
         mounted() {
-            const token = sessionStorage.getItem('token')
+            const token =this.$cookies.get('token')
             if(token){
                 this.isLoading = true
                 this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
                     this.user = res.data.data
-                    this.$store.commit('setToken',res.data.data.token)
-                    this.$store.commit('setUserInfo',res.data.data)
+                    this.$cookies.set('token',res.data.data.token,"30D")
+                    this.$cookies.set('userInfo',res.data.data,"30D")
+
                 }).catch(() => {
                 }).finally(() => {
                     this.isLoading = false
@@ -371,8 +372,8 @@
                     timeout:6000
                 }).then((res) => {
                     this.user = res.data.data
-                    this.$store.commit('setToken',res.data.data.token)
-                    this.$store.commit('setUserInfo',res.data.data)
+                    this.$cookies.set('token',res.data.data.token,"30D")
+                    this.$cookies.set('userInfo',res.data.data,"30D")
                 }).catch(() => {
                     this.$buefy.notification.open({
                         message: 'log in failed！',

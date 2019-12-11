@@ -23,8 +23,15 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 
 import VueCookies from 'vue-cookies'
+import hljs from 'highlight.js'
+import './css/github.css' //样式文件
+Vue.directive('highlight',function (el) {
+  let blocks = el.querySelectorAll('pre code');
+  blocks.forEach((block)=>{
+    hljs.highlightBlock(block)
+  })
+})
 Vue.use(VueCookies)
-
 Vue.use(VueAxios,axios);
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,

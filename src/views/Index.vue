@@ -3,6 +3,18 @@
         box-shadow: 0 10px 12px 0 rgba(10, 10, 10, 0.1) !important;
     }
 
+    .md-content{
+        word-break: break-word;
+    }
+
+    .md-content pre code {
+        margin: 0;
+        padding: 0;
+        white-space: pre;
+        border: none;
+        background: transparent;
+    }
+
     .image {
         height: 100%;
 
@@ -46,7 +58,7 @@
 
             <div class="quickview-body">
                 <div class="quickview-block content has-text-left" style="margin:20px 10px" >
-                    <div class="md-content" v-html="blog.content">
+                    <div class="md-content" v-html="blog.content" v-highlight>
 
                     </div>
                 </div>
@@ -78,7 +90,7 @@
                     </template>
                     <template slot="end">
                         <b-navbar-item tag="div">
-                            <div v-show="!user.avatarUrl" class="buttons">
+                            <div v-if="!$cookies.isKey('token')" class="buttons">
 <!--                                <a class="button is-primary">-->
 <!--                                    <strong>Sign up</strong>-->
 <!--                                </a>-->
@@ -86,7 +98,7 @@
                                     Log in
                                 </a>
                             </div>
-                            <div v-if="user.avatarUrl">
+                            <div v-if="$cookies.isKey('token')">
                                 <b-tooltip class="hover" :label="'Hi! '+user.name"
                                            position="is-bottom"
                                            animated>
@@ -365,12 +377,12 @@
                     this.nothingShow = true
                 }
             })
-            const token = sessionStorage.getItem('token');
+            const token =this.$cookies.get('token')
             if(token){
                 this.axios.get('/api/user/info?accessToken='+ token).then((res) => {
                     this.user = res.data.data
-                    this.$store.commit('setToken',res.data.data.token)
-                    this.$store.commit('setUserInfo',res.data.data)
+                    this.$cookies.set('token',res.data.data.token,"30D")
+                    this.$cookies.set('userInfo',res.data.data,"30D")
                 }).catch(() => {
                 }).finally(() => {
                     this.loading = false

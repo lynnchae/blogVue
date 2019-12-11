@@ -11,6 +11,13 @@
     .md-content{
         word-break: break-word;
     }
+    .md-content pre code {
+        margin: 0;
+        padding: 0;
+        white-space: pre;
+        border: none;
+        background: transparent;
+    }
     .scroll-top {
         width:25px!important;
         height:25px!important;
@@ -47,6 +54,8 @@
     .fade-enter, .fade-leave-active {
         opacity: 0;
     }
+
+
 </style>
 <template>
     <div class="container is-widescreen">
@@ -90,7 +99,7 @@
                 <div class="tile is-parent is-vertical has-text-left">
                     <div class="tile is-child content">
                         <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
-                            <div v-html="content"></div>
+                            <div v-html="content" v-highlight></div>
                         </div>
                     </div>
                 </div>
@@ -125,7 +134,7 @@
                             </div>
                             <br>
                                 <figure v-show="currentClickCommentId == item.id" class="media-content" >
-                                    <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
+                                    <div v-if="!$cookies.isKey('userInfo')" class="tile is-ancestor is-vertical">
                                         <div class="tile is-parent" style="margin-top: 5px">
                                             <div class="tile is-child is-2">
                                                 <b-field label="Name" label-position="on-border">
@@ -173,7 +182,7 @@
                                         </p>
                                     </div>
                                         <figure v-show="currentClickCommentId == c.id" class="media-content" >
-                                            <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
+                                            <div v-if="!$cookies.isKey('userInfo')" class="tile is-ancestor is-vertical">
                                                 <div class="tile is-parent" style="margin-top: 5px">
                                                     <div class="tile is-child is-2">
                                                         <b-field label="Name" label-position="on-border">
@@ -210,12 +219,12 @@
 
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img class="is-rounded" :src="$store.getters.userInfo ? $store.getters.userInfo.avatarUrl : 'https://pic.codelinn.com//random/header5.png'">
+                                <img class="is-rounded" :src="$cookies.isKey('userInfo') ? $cookies.get('userInfo').avatarUrl : 'https://pic.codelinn.com//random/header5.png'">
                             </p>
                         </figure>
                         <div class="media-content">
                             <figure class="media-content" >
-                                <div v-if="!$store.getters.userInfo" class="tile is-ancestor is-vertical">
+                                <div v-if="!$cookies.isKey('userInfo')" class="tile is-ancestor is-vertical">
                                     <div class="tile is-parent" style="margin-top: 5px">
                                         <div class="tile is-child is-2">
                                             <b-field label="Name" label-position="on-border">
@@ -283,17 +292,17 @@ export default {
                 parentId: '',
                 visitorId: null
             },
-            user: this.$store.getters.userInfo ? this.$store.getters.userInfo.name : '',
-            userEmail: this.$store.getters.userInfo ? this.$store.getters.userInfo.email : '',
-            userId: this.$store.getters.userInfo ? this.$store.getters.userInfo.userId : '',
+            user: this.$cookies.isKey('userInfo') ? this.$cookies.get('userInfo').name : '',
+            userEmail: this.$cookies.isKey('userInfo') ? this.$cookies.get('userInfo').email : '',
+            userId: this.$cookies.isKey('userInfo') ? this.$cookies.get('userInfo').userId : '',
             parentId: 0
         };
     },
     created() {
-        if(!this.$store.getters.userInfo && this.$cookies.isKey('commenter')){
+        if(!this.$cookies.isKey('userInfo') && this.$cookies.isKey('commenter')){
             this.user = this.$cookies.get('commenter')
         }
-        if(!this.$store.getters.userInfo && this.$cookies.isKey('commenterEmail')){
+        if(!this.$cookies.isKey('userInfo') && this.$cookies.isKey('commenterEmail')){
             this.userEmail = this.$cookies.get('commenterEmail')
         }
         // this.indexLoading = this.$loading({
