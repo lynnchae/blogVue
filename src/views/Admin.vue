@@ -101,7 +101,7 @@
                                             v-model="blog.content"
                                             ref="md"
                                             @change="change"
-                                            style="min-height: 500px"
+                                            style="min-height: 500px" @imgAdd="imgAdd"
                                     />
                                 </div>
                             </div>
@@ -345,6 +345,19 @@
                     done: 1,
                     userId: null
                 }
+            },
+            imgAdd(pos, $file){
+                // 第一步.将图片上传到服务器.
+                var formdata = new FormData();
+                formdata.append('file', $file);
+                this.axios.post('/api/blog/upload', formdata,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }}).then((resp) => {
+                    // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+                    // $vm.$img2Url 详情见本页末尾
+                    this.$refs.md.$img2Url(pos, resp.data.data);
+                })
             }
         },
         mounted() {

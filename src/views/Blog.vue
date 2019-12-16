@@ -175,7 +175,8 @@
                                         <p>
                                             <strong class="has-text-grape">{{c.commenter}}</strong>
                                             <br>
-                                            {{c.comment}}
+                                            <br>
+                                            {{c.comment}}<span class="has-text-primary">@{{' ' + c.replyTo + ' '}}</span>
                                             <br>
                                             <br>
                                             <small><a @click="clickReply(item.id, c.id, c.commenter)">Reply</a> · {{c.createTime}}</small>
