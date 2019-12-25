@@ -58,7 +58,7 @@
                         <b-navbar class="is-transparent navbar is-fixed-top" :mobile-burger="mobileBurger">
                             <template slot="brand">
                                 <b-navbar-item class="is-medium" tag="router-link" :to="{ path: '/' }">
-<!--                                    <img src="https://pic.codelinn.com/logo.png"/>-->
+<!--                                    <img src="https://pic.codelinn.com/logo/finalLogo.png"/>-->
                                     <font-awesome-icon class="has-text-white" :icon="['fas','home']"></font-awesome-icon>
                                 </b-navbar-item>
                             </template>

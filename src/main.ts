@@ -6,6 +6,7 @@ import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import 'bulma-extensions/dist/css/bulma-extensions.min.css'
 import 'swiper/dist/css/swiper.css'
+import 'animate.css/animate.min.css'
 
 import loading from 'vue-nice-loading'
 

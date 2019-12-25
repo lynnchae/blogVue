@@ -1,3 +1,9 @@
+<style lang="scss">
+    .rotateOutUpRight {
+        animation-duration: 3s;
+        animation-delay: 1s;
+    }
+</style>
 <template>
     <section class="hero is-medium">
         <div class="pageloader is-left-to-right" style="background-color: #7957d5" v-bind:class="{'is-active': loading}"><span class="title">Loading</span></div>
@@ -8,8 +14,8 @@
                         <div class="tile is-child">
                             <b-navbar class="navbar is-fixed-top has-background-white" :mobile-burger="false">
                                 <template slot="brand">
-                                    <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                                        <img src="https://pic.codelinn.com/logo.png"/>
+                                    <b-navbar-item class="pulse animated infinite" tag="router-link" :to="{ path: '/' }">
+                                        <img src="https://pic.codelinn.com/logo/finalLogo.png"/>
                                     </b-navbar-item>
                                 </template>
                             </b-navbar>
@@ -68,7 +74,7 @@
                                             </p>
                                         </b-field>
                                         <b-field expanded>
-                                            <button v-bind:class="{'is-loading': buttonLoading}" class="button is-primary" @click="submit">
+                                            <button :class="buttonLoading === true ? 'animated rotateOutUpRight':''" class="button is-primary" @click="submit">
                                                 <b-icon
                                                         pack="fas"
                                                         icon="paper-plane"
@@ -109,7 +115,7 @@
 
                             <div v-if="currentMenu === 'Posted'"  class="tile is-vertical is-parent">
                                 <div class="tile is-child is-8 control" v-for="item in blogs" :key="item.id">
-                                    <div class="box" style="box-shadow: 2px 0px 10px 1px rgba(10,10,10,.1)!important;">
+                                    <div class="box fadeInRight animated" style="box-shadow: 2px 0px 10px 1px rgba(10,10,10,.1)!important;">
                                         <article class="media">
                                             <div class="media-content">
                                                 <div class="content">
@@ -140,7 +146,7 @@
                                     <div class="card-content">
                                         <div class="media">
                                             <div class="media-left">
-                                                <figure class="image is-128x128">
+                                                <figure class="image is-128x128 fadeIn animated">
                                                     <img class="is-rounded" style="border: 2px solid rgb(121, 87, 213);box-shadow: 0px 0px 5px 2px rgba(121,87,123,.3);" :src="user.avatarUrl">
                                                 </figure>
                                             </div>
@@ -234,7 +240,6 @@
                         message: 'have you filled all things?!',
                         type: 'is-warning'
                     })
-                    this.buttonLoading = false
                     return;
                 }
                 if(!this.checkLogin()){

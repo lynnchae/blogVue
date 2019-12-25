@@ -1,4 +1,19 @@
-<style lang="scss">
+<style lang="scss" scoped>
+    .fadeInUp {
+        animation-duration: 5s;
+    }
+
+    .fadeInRight {
+        animation-duration: 1s;
+    }
+
+    .delay-200ms {
+        animation-delay: 200ms;
+    }
+
+    .delay-400ms {
+        animation-delay: 500ms;
+    }
     .box {
         box-shadow: 0 10px 12px 0 rgba(10, 10, 10, 0.1) !important;
     }
@@ -67,48 +82,51 @@
         </div>
         <div class="tile is-ancestor">
             <div class="tile is-parent">
-                <b-navbar class="container is-full-widescreen navbar is-fixed-top" shadow>
-                    <template slot="brand">
-                        <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                            <img src="https://pic.codelinn.com/logo.png"/>
-                        </b-navbar-item>
-                    </template>
-                    <template slot="start">
-                        <div class="field is-grouped">
-                            <b-navbar-item href="#">
-                                Home
-                            </b-navbar-item>
-                            <b-navbar-dropdown hoverable label="Info">
-                                <b-navbar-item @click="toPage('about')">
-                                    About
+                <div class="tile is-child is-full-widescreen">
+                    <div class="container">
+                        <b-navbar class="container navbar is-fixed-top fadeInDown animated" shadow>
+                            <template slot="brand">
+                                <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                                    <img src="https://pic.codelinn.com/logo/finalLogo.png"/>
                                 </b-navbar-item>
-                                <b-navbar-item @click="toPage('contact')">
-                                    Contact
+                            </template>
+                            <template slot="start">
+                                <div class="field is-grouped">
+                                    <b-navbar-item href="#">
+                                        Home
+                                    </b-navbar-item>
+                                    <b-navbar-dropdown hoverable label="Info">
+                                        <b-navbar-item @click="toPage('about')">
+                                            About
+                                        </b-navbar-item>
+                                        <b-navbar-item @click="toPage('contact')">
+                                            Contact
+                                        </b-navbar-item>
+                                    </b-navbar-dropdown>
+                                </div>
+                            </template>
+                            <template slot="end">
+                                <b-navbar-item tag="div">
+                                    <div v-if="!$cookies.isKey('token')" class="buttons">
+                                        <!--                                <a class="button is-primary">-->
+                                        <!--                                    <strong>Sign up</strong>-->
+                                        <!--                                </a>-->
+                                        <a @click="loginModel = true" class="button is-light">
+                                            Log in
+                                        </a>
+                                    </div>
+                                    <div v-if="$cookies.isKey('token')" class="fadeInDownBig animated">
+                                        <b-tooltip class="hover" :label="'Hi! '+user.name"
+                                                   position="is-bottom"
+                                                   animated>
+                                            <img @click="toPage('admin')" :src="user.avatarUrl">
+                                        </b-tooltip>
+                                    </div>
                                 </b-navbar-item>
-                            </b-navbar-dropdown>
-                        </div>
-                    </template>
-                    <template slot="end">
-                        <b-navbar-item tag="div">
-                            <div v-if="!$cookies.isKey('token')" class="buttons">
-<!--                                <a class="button is-primary">-->
-<!--                                    <strong>Sign up</strong>-->
-<!--                                </a>-->
-                                <a @click="loginModel = true" class="button is-light">
-                                    Log in
-                                </a>
-                            </div>
-                            <div v-if="$cookies.isKey('token')">
-                                <b-tooltip class="hover" :label="'Hi! '+user.name"
-                                           position="is-bottom"
-                                           animated>
-                                    <img @click="toPage('admin')" :src="user.avatarUrl">
-                                </b-tooltip>
-                            </div>
-                        </b-navbar-item>
-                    </template>
-                </b-navbar>
-
+                            </template>
+                        </b-navbar>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="tile is-ancestor">
@@ -170,7 +188,7 @@
         <div class="tile is-ancestor columns ">
             <div class="column">
                 <div class="tile is-parent is-vertical has-text-left">
-                    <div class="tile box is-vertical" v-for="item in blogs" :key="item.id">
+                    <div class="tile box is-vertical fadeInUpBig animated" v-for="item in blogs" :key="item.id">
                         <div class="tile is-child">
                             <article>
                                 <div class="columns is-mobile">
@@ -221,7 +239,7 @@
             </div>
             <div class="column is-one-third">
                 <div class="tile is-parent is-vertical ">
-                    <div class="tile is-child box">
+                    <div class="tile is-child box fadeInRight animated">
                         <b-field>
                             <b-input v-model="searchWord" placeholder="Search..." icon="search"
                                      @keyup.enter.native="query">
@@ -230,7 +248,7 @@
                             </b-input>
                         </b-field>
                     </div>
-                    <article class="message is-primary " style="box-shadow: 0 10px 12px 0 rgba(10, 10, 10, 0.1);background-color: #FFFFFF">
+                    <article class="message is-primary fadeInRight animated delay-200ms" style="box-shadow: 0 10px 12px 0 rgba(10, 10, 10, 0.1);background-color: #FFFFFF">
                         <div class="message-header">
                             <p>更新</p>
                         </div>
@@ -262,7 +280,7 @@
                         </div>
                     </article>
 
-                    <div class="tile is-child box">
+                    <div class="tile is-child box fadeInRight animated delay-400ms">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-96x96 is-rounded">

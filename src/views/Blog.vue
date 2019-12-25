@@ -1,4 +1,8 @@
 <style lang="scss">
+
+    .fadeIn {
+        animation-duration: 300ms;
+    }
     .has-text-grape {
         color: #7957d5
     }
@@ -65,8 +69,8 @@
                 <div class="tile is-child">
                     <b-navbar class="navbar" shadow :mobile-burger="mobileBurger" >
                         <template slot="brand">
-                            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                                <img src="https://pic.codelinn.com/logo.png"/>
+                            <b-navbar-item class="pulse animated infinite" tag="router-link" :to="{ path: '/' }">
+                                <img src="https://pic.codelinn.com/logo/finalLogo.png"/>
                             </b-navbar-item>
                         </template>
                     </b-navbar>
@@ -75,14 +79,14 @@
             <toc-menu :toc="toc"/>
             <div>
                 <div class="tile is-parent has-text-centered margin-0-50">
-                    <div class="tile is-child ">
-                    <span class="title is-large">
-                    {{title}}
-                    </span>
+                    <div class="tile is-child fadeInDown animated">
+                        <span class="title is-large">
+                        {{title}}
+                        </span>
                     </div>
                 </div>
                 <div class="tile is-parent is-vertical has-text-right">
-                    <div class="tile is-child content">
+                    <div class="tile is-child content fadeInRight animated">
                         <div class="md-content margin-0-50" >
                             <span>
                                 <font-awesome-icon :icon="['fab','markdown']"></font-awesome-icon>
@@ -98,8 +102,8 @@
                 </div>
                 <div class="tile is-parent is-vertical has-text-left">
                     <div class="tile is-child content">
-                        <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 80px; ">
-                            <div v-html="content" v-highlight></div>
+                        <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 30px; ">
+                            <div class="fadeInUp animated" v-html="content" v-highlight></div>
                         </div>
                     </div>
                 </div>
@@ -133,7 +137,7 @@
                                 </p>
                             </div>
                             <br>
-                                <figure v-show="currentClickCommentId == item.id" class="media-content" >
+                                <figure v-show="currentClickCommentId == item.id" :class="currentClickCommentId == item.id ? 'fadeIn animated' : '' " class="media-content" >
                                     <div v-if="!$cookies.isKey('userInfo')" class="tile is-ancestor is-vertical">
                                         <div class="tile is-parent" style="margin-top: 5px">
                                             <div class="tile is-child is-2">
@@ -176,13 +180,13 @@
                                             <strong class="has-text-grape">{{c.commenter}}</strong>
                                             <br>
                                             <br>
-                                            {{c.comment}}<span class="has-text-primary">@{{' ' + c.replyTo + ' '}}</span>
+                                            {{c.comment}}<strong><span class="has-text-primary">{{'  @' + c.replyTo + ' '}}</span></strong>
                                             <br>
                                             <br>
                                             <small><a @click="clickReply(item.id, c.id, c.commenter)">Reply</a> · {{c.createTime}}</small>
                                         </p>
                                     </div>
-                                        <figure v-show="currentClickCommentId == c.id" class="media-content" >
+                                        <figure v-show="currentClickCommentId == c.id" :class="currentClickCommentId == c.id ? 'fadeIn animated' : '' " class="media-content" >
                                             <div v-if="!$cookies.isKey('userInfo')" class="tile is-ancestor is-vertical">
                                                 <div class="tile is-parent" style="margin-top: 5px">
                                                     <div class="tile is-child is-2">
@@ -390,6 +394,9 @@ export default {
             })
         },
         postComment(){
+            if(this.newComment === '') {
+                return
+            }
             this.comment.blogId = this.id
             this.comment.commenter = this.user
             this.comment.commenterEmail = this.userEmail

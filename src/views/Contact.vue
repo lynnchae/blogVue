@@ -14,7 +14,7 @@
                 <b-navbar class="is-transparent navbar is-fixed-top" :mobile-burger="mobileBurger">
                     <template slot="brand">
                         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                            <img src="https://pic.codelinn.com/logo.png"/>
+                            <img src="https://pic.codelinn.com/logo/finalLogo.png"/>
                         </b-navbar-item>
                     </template>
                 </b-navbar>
