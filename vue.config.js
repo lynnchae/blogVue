@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 module.exports = {
   publicPath: '/',
   devServer: {
@@ -9,5 +10,15 @@ module.exports = {
           '^/api': ''
         }
       }    }
+  },
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $:"jquery",
+
+        jQuery:"jquery",
+        "windows.jQuery":"jquery"
+      })
+    ]
   }
 }

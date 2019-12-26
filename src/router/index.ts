@@ -5,6 +5,7 @@ import blog from '../views/Blog.vue'
 import about from '../views/About.vue'
 import contact from '../views/Contact.vue'
 import admin from '../views/Admin.vue'
+import album from '../views/Album.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: admin
+  },
+  {
+    path: '/album',
+    name: 'album',
+    component: album
   }
   // {
   //   path: '/about',

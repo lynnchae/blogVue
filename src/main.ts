@@ -7,6 +7,10 @@ import 'buefy/dist/buefy.css'
 import 'bulma-extensions/dist/css/bulma-extensions.min.css'
 import 'swiper/dist/css/swiper.css'
 import 'animate.css/animate.min.css'
+import 'viewerjs/dist/viewer.css'
+import $ from 'jquery'
+
+Vue.prototype.$ = $;   // 当然还有这句话 给vue原型上添加 $
 
 import loading from 'vue-nice-loading'
 
@@ -22,6 +26,7 @@ import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamat
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import Viewer from 'v-viewer';
 
 import VueCookies from 'vue-cookies'
 import hljs from 'highlight.js'
@@ -34,6 +39,7 @@ Vue.directive('highlight',function (el) {
 })
 Vue.use(VueCookies)
 Vue.use(VueAxios,axios);
+Vue.use(Viewer)
 
 library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
     faArrowUp, faAngleRight, faAngleLeft, faAngleDown,

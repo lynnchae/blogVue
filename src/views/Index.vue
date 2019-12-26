@@ -103,6 +103,9 @@
                                             Contact
                                         </b-navbar-item>
                                     </b-navbar-dropdown>
+                                    <b-navbar-item @click="toPage('album')">
+                                        Albums
+                                    </b-navbar-item>
                                 </div>
                             </template>
                             <template slot="end">
