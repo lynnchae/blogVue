@@ -47,8 +47,13 @@
             </div>
             <div class="tile is-parent" style="padding-top: 50px">
                 <div class="tile is-child">
-                    <div class="photos" v-viewer="options" >
-                        <img class="image fadeInUp animated delay-200ms" v-for="src in targetAlbum.imgs" :key="src.id" :src="src.url" />
+                    <div>
+                        <stack monitor-images-loaded :column-min-width="320" :gutter-width="8" :gutter-height="8">
+                            <stack-item style="transition: transform 300ms" v-for="(item, i) in targetAlbum.imgs" :key="i">
+<!--                                <img class="" :src="item.url" />-->
+                                <img :preview="targetAlbum.title" :src="item.url" />
+                            </stack-item>
+                        </stack>
                     </div>
                 </div>
             </div>
@@ -56,11 +61,10 @@
     </div>
 </template>
 <script>
-    import $ from 'jquery'
-    import '../js/xGallerify'
+    import { Stack, StackItem } from 'vue-stack-grid'
     export default {
         name: 'album',
-        components: {},
+        components: { Stack, StackItem },
         data() {
             return {
                 gallery: null,
@@ -110,40 +114,12 @@
         },
         methods:{
             showAlbum(id){
-                window.console.log(document.readyState)
-                if(document.readyState !== 'complete'){
-                    this.$buefy.notification.open({
-                        message: '页面还没加载完成哦~',
-                        type: 'is-warning'
-                    })
-                    return;
-                }
-                // $('.albums').fadeOut('slow',function () {
-                //     $(this).hidden
-                // })
                 this.targetAlbum = this.albums[id]
                 this.currentId = id
-                this.$nextTick(function () {
-                    this.gallery = $('.photos').gallerify({
-                        margin: 10,
-                        mode: 'flickr',
-                        lastRow: 'fullwidth'
-                    })
-                })
-                setTimeout(function () {
-                    this.gallery = $('.photos').gallerify({
-                        margin: 10,
-                        mode: 'small',
-                        lastRow: 'fullwidth'
-                    })
-                },200)
             },
             allAlbums(){
                 this.targetAlbum = {}
                 this.currentId = ''
-                $('.albums').fadeIn('slow',function () {
-                    $(this).show
-                })
             }
         }
     }
