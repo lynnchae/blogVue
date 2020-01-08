@@ -31,12 +31,12 @@
                 <div class="tile is-child">
                     <div class=" ">
                         <div class="photo" style="height:180px;width: 267px;padding:5px;display: block;float: left">
-                                <img class="image-thumbnail" @click="showAlbum(0)" src="https://pic.codelinn.com/blog/index/swipera6.jpg" />
-                                <div class="title">The Swiper</div>
+                            <img class="image-thumbnail" @click="showAlbum(0)" src="https://pic.codelinn.com/blog/index/swipera6.jpg" />
+                            <div class="title">The Swiper</div>
                         </div>
                         <div class="photo" style="height:180px;width: 267px;padding:5px;display: block;float: left" >
-                                <img class="image-thumbnail" @click="showAlbum(1)" src="https://pic.codelinn.com/blog/background/samrat-khadka-pK27drHOpbY-unsplash.jpg" />
-                                <div  class="title">The Wallpapers</div>
+                            <img class="image-thumbnail" @click="showAlbum(1)" src="https://pic.codelinn.com/blog/background/samrat-khadka-pK27drHOpbY-unsplash.jpg" />
+                            <div  class="title">The Wallpapers</div>
                         </div>
                         <div class="photo" style="height:180px;width: 267px;padding:5px;display: block;float: left" >
                             <img class="image-thumbnail" @click="showAlbum(2)" src="https://pic.codelinn.com/albums/marry/3B3A5638.JPG" />
@@ -48,11 +48,15 @@
             <div class="tile is-parent" style="padding-top: 50px">
                 <div class="tile is-child">
                     <div>
-                        <stack monitor-images-loaded :column-min-width="320" :gutter-width="8" :gutter-height="8">
-                            <stack-item style="transition: transform 300ms" v-for="(item, i) in targetAlbum.imgs" :key="i">
-<!--                                <img class="" :src="item.url" />-->
-                                <img :preview="targetAlbum.title" :src="item.url" />
-                            </stack-item>
+                        <stack :monitor-images-loaded="imagesLoaded" :column-min-width="320" :gutter-width="8" :gutter-height="8">
+                            <scroller
+                                    :on-infinite="infinite">
+                                <stack-item style="transition: transform 300ms" v-for="(item, i) in targetAlbum.imgs" :key="i">
+                                    <!--                                <img class="" :src="item.url" />-->
+                                    <img :preview="targetAlbum.title" :src="item.url" />
+                                </stack-item>
+                            </scroller>
+
                         </stack>
                     </div>
                 </div>
@@ -67,6 +71,7 @@
         components: { Stack, StackItem },
         data() {
             return {
+                imagesLoaded: true,
                 gallery: null,
                 currentId: '',
                 options: { inline: false, button: true, navbar: true, title: false, toolbar: true, tooltip: true, movable: false, zoomable: false, rotatable: false, scalable: false, transition: true, fullscreen: false, keyboard: true, url: "data-source" },
@@ -90,7 +95,7 @@
                             {url:'https://pic.codelinn.com/blog/background/tim-marshall-9ZYKtx9nPCc-unsplash.jpg',id:2},
                             {url: 'https://pic.codelinn.com/blog/background/samrat-khadka-pK27drHOpbY-unsplash.jpg',id: 1},
                             {url:'https://pic.codelinn.com/blog/background/markus-spiske-x1QSu6XexIw-unsplash.jpg',id:4}
-                            ]},
+                        ]},
                     {
                         title:'img3',
                         imgs:[
@@ -141,23 +146,55 @@
                             {url:'https://pic.codelinn.com/album/wedding10.jpg',id:10}
                         ]}
                 ],
-                targetAlbum: {},
+                targetAlbum: {
+                    title: '',
+                    imgs: []
+                },
                 imgsArr: ['https://pic.codelinn.com/blog/background/markus-spiske-x1QSu6XexIw-unsplash.jpg',
                     'https://pic.codelinn.com/193.jpeg',
                     'https://pic.codelinn.com/blog/index/swipera1.jpg',
                     'https://pic.codelinn.com/logo/IMG_5928.PNG',
                     'https://pic.codelinn.com/blog/background/willian-justen-de-vasconcellos-FfpZPMVV_M8-unsplash.jpg'
-                ]
+                ],
+                page: 0
             }
+        },
+        mounted() {
+            window.addEventListener('scroll',this.handleScroll)
         },
         methods:{
             showAlbum(id){
-                this.targetAlbum = this.albums[id]
+                this.page = 0
                 this.currentId = id
+                // this.targetAlbum = this.albums[id]
+                this.getAlbumsNextPage()
             },
             allAlbums(){
-                this.targetAlbum = {}
+                this.targetAlbum = {
+                    title: '',
+                    imgs: []
+                }
                 this.currentId = ''
+                this.page = 0
+            },
+            getAlbumsNextPage(){
+                const id = this.currentId
+                this.targetAlbum.title = this.albums[id].title
+                this.page += 1
+                const startIndex = (this.page - 1) * 10
+                const endIndex = startIndex + 10
+                if(startIndex > this.albums[id].length){
+                    return
+                }
+                this.targetAlbum.imgs = this.targetAlbum.imgs.concat(this.albums[id].imgs.slice(startIndex,endIndex))
+            },
+            handleScroll(){
+                if(this.currentId === ''){
+                    return
+                }
+                if((document.documentElement.scrollTop + window.outerHeight) > document.body.offsetHeight){
+                    this.getAlbumsNextPage()
+                }
             }
         }
     }
