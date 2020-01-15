@@ -49,14 +49,10 @@
                 <div class="tile is-child">
                     <div>
                         <stack :monitor-images-loaded="imagesLoaded" :column-min-width="320" :gutter-width="8" :gutter-height="8">
-                            <scroller
-                                    :on-infinite="infinite">
-                                <stack-item style="transition: transform 300ms" v-for="(item, i) in targetAlbum.imgs" :key="i">
-                                    <!--                                <img class="" :src="item.url" />-->
-                                    <img :preview="targetAlbum.title" :src="item.url" />
-                                </stack-item>
-                            </scroller>
-
+                            <stack-item style="transition: transform 300ms" v-for="(item, i) in targetAlbum.imgs" :key="i">
+                                <!--                                <img class="" :src="item.url" />-->
+                                <img :preview="targetAlbum.title" :src="item.url" />
+                            </stack-item>
                         </stack>
                     </div>
                 </div>
@@ -156,7 +152,8 @@
                     'https://pic.codelinn.com/logo/IMG_5928.PNG',
                     'https://pic.codelinn.com/blog/background/willian-justen-de-vasconcellos-FfpZPMVV_M8-unsplash.jpg'
                 ],
-                page: 0
+                page: 0,
+                pulling: false
             }
         },
         mounted() {
@@ -187,13 +184,17 @@
                     return
                 }
                 this.targetAlbum.imgs = this.targetAlbum.imgs.concat(this.albums[id].imgs.slice(startIndex,endIndex))
+                this.pulling = false
             },
             handleScroll(){
                 if(this.currentId === ''){
                     return
                 }
-                if((document.documentElement.scrollTop + window.outerHeight) > document.body.offsetHeight){
-                    this.getAlbumsNextPage()
+                if( document.body.offsetHeight - (document.documentElement.scrollTop + window.innerHeight) <= 30 && this.pulling === false){
+                    this.pulling = true
+                    setTimeout(()=>{
+                        this.getAlbumsNextPage()
+                    },500)
                 }
             }
         }
