@@ -80,7 +80,7 @@
             <div>
                 <div class="tile is-parent has-text-centered margin-0-50">
                     <div class="tile is-child fadeInDown animated">
-                        <span class="title is-large">
+                        <span class="title is-size-2-desktop">
                         {{title}}
                         </span>
                     </div>
@@ -103,7 +103,7 @@
                 <div class="tile is-parent is-vertical has-text-left">
                     <div class="tile is-child content">
                         <div id="blog-main-content" class="md-content margin-0-50" style="padding-top: 30px; ">
-                            <div class="fadeInUp animated" v-html="content" v-highlight></div>
+                            <div class="fadeInUp animated is-size-5-desktop" v-html="content" v-highlight></div>
                         </div>
                     </div>
                 </div>

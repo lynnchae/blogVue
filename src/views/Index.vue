@@ -198,9 +198,9 @@
                                     <div class="column" style="align-self: center">
                                         <span class="subtitle">{{item.createTime}}</span>
                                         <span style="padding-left: 10px" class="has-text-primary hover">
-                                            <font-awesome-icon v-if="currentReviewId === item.id" class="is-primary" :icon="['fa','feather-alt']" @click="review(item.id)"></font-awesome-icon>
-                                            <font-awesome-icon v-if="currentReviewId !== item.id" class="is-primary" :icon="['fa','feather']" @click="review(item.id)"></font-awesome-icon>
-                                        </span>
+                                    <font-awesome-icon v-if="currentReviewId === item.id" class="is-primary" :icon="['fa','feather-alt']" @click="review(item.id)"></font-awesome-icon>
+                                    <font-awesome-icon v-if="currentReviewId !== item.id" class="is-primary" :icon="['fa','feather']" @click="review(item.id)"></font-awesome-icon>
+                                </span>
                                     </div>
                                 </div>
                                 <div class="tile is-vertical">
@@ -216,27 +216,27 @@
 
                             </article>
                         </div>
-                            <nav class="level is-mobile">
-                                <div class="level-left is-8">
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
-                                            <p ></p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-centered">
-                                        <div>
-                                            <p class="heading"><font-awesome-icon icon="comment"></font-awesome-icon> ({{item.comments}})</p>
-                                            <p ></p>
-                                        </div>
+                        <nav class="level is-mobile">
+                            <div class="level-left is-8">
+                                <div class="level-item has-text-left">
+                                    <div>
+                                        <p class="heading"><font-awesome-icon icon="heart"></font-awesome-icon> ({{item.likes}})</p>
+                                        <p ></p>
                                     </div>
                                 </div>
-                                <div class="level-right" >
-                                    <div class="level-item has-text-right">
-                                        <p>Posted by <strong>{{item.name}}</strong></p>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                        <p class="heading"><font-awesome-icon icon="comment"></font-awesome-icon> ({{item.comments}})</p>
+                                        <p ></p>
                                     </div>
                                 </div>
-                            </nav>
+                            </div>
+                            <div class="level-right" >
+                                <div class="level-item has-text-right">
+                                    <p>Posted by <strong>{{item.name}}</strong></p>
+                                </div>
+                            </div>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -364,7 +364,11 @@
                     name: '',
                     avatarUrl: '',
                     email: ''
-                }
+                },
+                page: 1,
+                pageSize: 10,
+                lastId: null,
+                total: null
             }
         },
         created() {
@@ -386,8 +390,12 @@
             //     type: 'bars',
             //     background: '#7957d5'
             // })
-            this.axios.get('/api/blog/getUserBlogs?userId=',{timeout:5000}).then((res) => {
+            this.axios.get('/api/blog/getUserBlogs?userId=&pageSize=' + this.pageSize,{timeout:5000}).then((res) => {
                 this.blogs = res.data.data.list
+                if(this.blogs.length > 0){
+                    this.lastId = this.blogs[this.blogs.length-1].id
+                }
+                this.total = res.data.data.total
                 // indexLoading.close()
 
             }).catch(error => {
@@ -410,7 +418,46 @@
                 })
             }
         },
+        mounted () {
+            window.addEventListener('scroll', this.handleScroll)
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll)
+            this.blogs = []
+        },
         methods: {
+            handleScroll () {
+                //变量scrollTop是滚动条滚动时，距离顶部的距离
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                //变量windowHeight是可视区的高度
+                const windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                //变量scrollHeight是滚动条的总高度
+                const scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
+                //滚动条到底部的条件
+                if(scrollTop + windowHeight === scrollHeight && this.blogs.length < this.total){
+                    window.console.info('loadmore...')
+                    this.loadMore() // 加载的列表数据
+                }
+            },
+            loadMore(){
+                this.axios.get('/api/blog/getUserBlogs?userId=&lastId='+ this.lastId +'&pageSize=' + this.pageSize,{timeout:5000}).then((res) => {
+                    // this.blogs = res.data.data.list
+                    this.loading = true
+                    this.blogs = this.blogs.concat(res.data.data.list)
+                    if(this.blogs.length > 0){
+                        this.lastId = this.blogs[this.blogs.length-1].id
+                    }
+                    // indexLoading.close()
+
+                }).catch(error => {
+                    window.console.info(error)
+                }).finally(() => {
+                    this.loading = false
+                    if(this.blogs.length == 0){
+                        this.nothingShow = true
+                    }
+                })
+            },
             query() {
                 if (this.searchWord) {
                     this.axios.post('/api/s/blogs?word=' + this.searchWord).then((res) => {

@@ -12,6 +12,9 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)
 
+import VueScroller from 'vue-scroller'
+Vue.use(VueScroller)
+
 import loading from 'vue-nice-loading'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
