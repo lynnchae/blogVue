@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
     .rotateOutUpRight {
         animation-duration: 3s;
         animation-delay: 1s;
@@ -12,164 +12,139 @@
                 <div class="tile is-vertical is-ancestor">
                     <div class="tile is-parent">
                         <div class="tile is-child">
-                            <b-navbar class="navbar is-fixed-top has-background-white" :mobile-burger="false">
+                            <b-navbar style="z-index: 2000!important;" class="container navbar is-fixed-top has-background-white" :mobile-burger="false">
                                 <template slot="brand">
                                     <b-navbar-item class="pulse animated infinite" tag="router-link" :to="{ path: '/' }">
                                         <img src="https://pic.codelinn.com/logo/finalLogo.png"/>
                                     </b-navbar-item>
                                 </template>
+                                <template slot="end">
+                                    <b-navbar-item tag="div">
+                                        <div class="buttons">
+                                            <a class="button is-light" @click="signOut">
+                                                Log Out
+                                            </a>
+                                        </div>
+                                    </b-navbar-item>
+                                </template>
                             </b-navbar>
                         </div>
                     </div>
-                    <div class="tile is-12 is-parent" style="margin-top: 20px">
-                        <div class="tile is-child is-2" style="border-right: 1px #7957d5;box-shadow: rgba(121, 87, 213, 0.3) 3px 0px 0px 0px">
-                            <aside class="menu has-text-left" >
-                                <b-menu>
-                                    <b-menu-list label="Menu" >
-                                        <b-menu-item icon="user" :active="currentMenu === 'User'" @click="tab('User')" :label="user.name | nameFilter"></b-menu-item>
-                                        <b-menu-item
-                                                icon="tag"
-                                                :active="isActive"
-                                                :expanded="isActive"
-                                                @click="isActive = !isActive" >
-                                            <template slot="label" slot-scope="props">
-                                                Personal Center
-                                                <b-icon
-                                                        class=" is-pulled-right"
-                                                        :icon="props.expanded ? 'angle-down' : 'angle-up'">
-                                                </b-icon>
-                                            </template>
-                                            <b-menu-item icon="paper-plane" :active="currentMenu === 'Posted'" @click="tab('Posted')" label="Posted"></b-menu-item>
-                                            <b-menu-item icon="pencil-alt" :active="currentMenu === 'Edit'" @click="tab('Edit')" label="Edit" ></b-menu-item>
-                                        </b-menu-item>
-<!--                                        <b-menu-item icon="account" label="My Account">-->
-<!--                                            <b-menu-item label="Account data"></b-menu-item>-->
-<!--                                            <b-menu-item label="Addresses"></b-menu-item>-->
-<!--                                        </b-menu-item>-->
-                                    </b-menu-list>
-                                    <b-menu-list label="Actions">
-                                        <b-menu-item icon="sign-out-alt" @click="signOut" label="Logout"></b-menu-item>
-                                    </b-menu-list>
-                                </b-menu>
-                            </aside>
-                        </div>
-                        <div class="tile is-child is-10" >
-                            <div v-if="currentMenu === 'Edit'"  class="tile is-vertical is-parent">
-                                <div class="tile is-child control">
-                                    <b-field grouped>
-                                        <b-field expanded>
-                                            <p class="control has-icons-left ">
-                                                <b-field>
-                                                    <b-input placeholder="title"
-                                                             type="text"
-                                                             v-model="blog.title"
-                                                             required
-                                                             validation-message="title is required!">
-                                                    </b-input>
-
-                                                </b-field>
-                                                <span class="icon is-small has-text-primary is-left">
-                                                    <font-awesome-icon icon="leaf"></font-awesome-icon>
-                                                </span>
-                                            </p>
-                                        </b-field>
-                                        <b-field expanded>
-                                            <button :class="buttonLoading === true ? 'animated rotateOutUpRight':''" class="button is-primary" @click="submit">
-                                                <b-icon
-                                                        pack="fas"
-                                                        icon="paper-plane"
-                                                        size="is-small">
-                                                </b-icon>
-                                            </button>
-                                        </b-field>
-                                    </b-field>
-                                </div>
-                                <div class="tile is-child is-2">
-                                    <div class="field">
-                                        <p class="control has-icons-left has-icons-right">
-                                            <b-field>
-                                                <b-input placeholder="tags"
-                                                         type="text"
-                                                         v-model="blog.tags"
-                                                         required
-                                                         validation-message="tag is required!">
-                                                </b-input>
-
-                                            </b-field>
-                                            <span class="icon is-small has-text-primary is-left">
-                                                <font-awesome-icon icon="tag"></font-awesome-icon>
-                                            </span>
-                                        </p>
+                    <div style="margin-top: 20px" class="tile is-parent">
+                        <div class="tile is-vertical is-parent">
+                            <div class="has-text-left" >
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <figure class="image is-128x128 fadeIn animated">
+                                                <img class="is-rounded" style="box-shadow: 0px 0px 5px 2px rgba(121,87,123,.3);" :src="user.avatarUrl">
+                                            </figure>
+                                        </div>
+                                        <div class="media-content">
+                                            <p class="title is-4">{{user.name}}</p>
+                                            <p class="subtitle is-6">{{user.email}}</p>
+                                            <p><time v-if="user.createTime" datetime="2016-1-1">Registered at <strong  style="color:#7957d5">{{user.createTime}}</strong></time></p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tile is-child">
-                                    <mavon-editor
-                                            v-model="blog.content"
-                                            ref="md"
-                                            @change="change"
-                                            style="min-height: 500px" @imgAdd="imgAdd"
-                                    />
-                                </div>
+                                <b-loading :is-full-page="isFullPage" :active.sync="isLoading" ></b-loading>
                             </div>
-
-
-                            <div v-if="currentMenu === 'Posted'"  class="tile is-vertical is-parent">
-                                <div class="tile is-child is-8 control" v-for="item in blogs" :key="item.id">
-                                    <div class="box fadeInRight animated" style="box-shadow: 2px 0px 10px 1px rgba(10,10,10,.1)!important;">
-                                        <article class="media">
-                                            <div class="media-content">
-                                                <div class="content">
-                                                    <div class="tile is-vertical is-parent">
-                                                        <div class="level">
-                                                            <div class="level-left">
-                                                                <strong><a @click="toPage('blog',{title:item.title,id:item.id})">{{item.title}}</a></strong>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px" class="tile is-parent">
+                        <div class="tile is-child " style="width: 100%;">
+                            <b-tabs type="is-boxed" v-model="activeTabIndex" style="width: 100%" @change="tabChange">
+                                <b-tab-item label="Posted" icon="paper-plane">
+                                    <div class="tile is-vertical is-parent">
+                                        <div class="tile is-child control" v-for="item in blogs" :key="item.id">
+                                            <div style="border-bottom: 1px solid #f0f0f0!important;">
+                                                <article class="media">
+                                                    <div class="media-content">
+                                                        <div class="content">
+                                                            <div class="tile is-vertical is-parent">
+                                                                <div class="level is-mobile">
+                                                                    <div class="level-left">
+                                                                        <div class="level-item">
+                                                                            <strong><a @click="toPage('blog',{title:item.title,id:item.id})">{{item.title}}</a></strong>
+                                                                        </div>
+                                                                        <div class="level-item">
+                                                                        <span @click="edit(item.id)" class="has-text-primary is-small" style="cursor:pointer;">
+                                                                            <font-awesome-icon class="is-primary is-small" :icon="['fa','pencil-alt']"></font-awesome-icon>
+                                                                        </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="tile is-child">
+                                                                    <small>@</small> <small>{{item.createTime}}</small>
+                                                                </div>
                                                             </div>
-                                                            <div class="level-right">
-                                                               <span @click="edit(item.id)" class="has-text-primary hover is-small">
-                                                                <font-awesome-icon class="is-primary is-small" :icon="['fa','pencil-alt']"></font-awesome-icon>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="tile is-child">
-                                                            <small>@</small> <small>{{item.createTime}}</small>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="user" v-if="currentMenu === 'User'"  class="tile is-vertical is-6 is-parent">
-                                <div class="box card has-text-left" >
-                                    <div class="card-content">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <figure class="image is-128x128 fadeIn animated">
-                                                    <img class="is-rounded" style="border: 2px solid rgb(121, 87, 213);box-shadow: 0px 0px 5px 2px rgba(121,87,123,.3);" :src="user.avatarUrl">
-                                                </figure>
-                                            </div>
-                                            <div class="media-content">
-                                                <p class="title is-4">{{user.name}}</p>
-                                                <p class="subtitle is-6">{{user.email}}</p>
+                                                </article>
                                             </div>
                                         </div>
+                                    </div>
+                                </b-tab-item>
+                                <b-tab-item label="Edit" icon="pencil-alt">
+                                    <div class="tile is-vertical is-parent">
+                                        <div class="tile is-child control">
+                                            <b-field grouped>
+                                                <b-field expanded>
+                                                    <p class="control has-icons-left ">
+                                                        <b-field>
+                                                            <b-input placeholder="title"
+                                                                     type="text"
+                                                                     v-model="blog.title"
+                                                                     required
+                                                                     validation-message="title is required!">
+                                                            </b-input>
 
-                                        <div class="level">
-                                            <div class="level-item level-right">
-                                                <div class=" content">
-                                                    <br/>
-                                                    <time v-if="user.createTime" datetime="2016-1-1">Registered at <strong  style="color:#7957d5">{{user.createTime}}</strong></time>
-                                                </div>
+                                                        </b-field>
+                                                        <span class="icon is-small has-text-primary is-left">
+                                                    <font-awesome-icon icon="leaf"></font-awesome-icon>
+                                                </span>
+                                                    </p>
+                                                </b-field>
+                                                <b-field expanded>
+                                                    <button :class="buttonLoading === true ? 'animated rotateOutUpRight':''" class="button is-primary" @click="submit">
+                                                        <b-icon
+                                                                pack="fas"
+                                                                icon="paper-plane"
+                                                                size="is-small">
+                                                        </b-icon>
+                                                    </button>
+                                                </b-field>
+                                            </b-field>
+                                        </div>
+                                        <div class="tile is-child is-2">
+                                            <div class="field">
+                                                <p class="control has-icons-left has-icons-right">
+                                                    <b-field>
+                                                        <b-input placeholder="tags"
+                                                                 type="text"
+                                                                 v-model="blog.tags"
+                                                                 required
+                                                                 validation-message="tag is required!">
+                                                        </b-input>
+
+                                                    </b-field>
+                                                    <span class="icon is-small has-text-primary is-left">
+                                                <font-awesome-icon icon="tag"></font-awesome-icon>
+                                            </span>
+                                                </p>
                                             </div>
                                         </div>
-
+                                        <div class="tile is-child" style="width:100%">
+                                            <mavon-editor
+                                                    v-model="blog.content"
+                                                    ref="md"
+                                                    @change="change"
+                                                    style="min-height: 500px" @imgAdd="imgAdd"
+                                            />
+                                        </div>
                                     </div>
-                                    <b-loading :is-full-page="isFullPage" :active.sync="isLoading" ></b-loading>
-                                </div>
-                            </div>
-
+                                </b-tab-item>
+                            </b-tabs>
                         </div>
                     </div>
                 </div>
@@ -222,10 +197,22 @@
                     avatarUrl: 'https://pic.codelinn.com//random/header5.png',
                     email: ''
                 },
-                isActive: false
+                isActive: false,
+                activeTabIndex: 0,
+                fromEdit: true
             }
         },
         methods: {
+            tabChange(index){
+                if(index === 0 ){
+                    this.tab('Posted')
+                }else if( index === 1){
+                    if(!this.fromEdit) {
+                        this.tab('Edit')
+                    }
+                }
+                this.fromEdit = false
+            },
             // 所有操作都会被解析重新渲染
             change(value, render){
                 // render 为 markdown 解析后的结果[html]
@@ -313,6 +300,7 @@
                 }
             },
             edit(id){
+                this.fromEdit = true
                 this.axios.get('/api/blog/gBlog?id='+id).then(res => {
                     if(res.data.code){
                         this.$buefy.notification.open({
@@ -320,7 +308,7 @@
                             type: 'is-warning'
                         })
                     }else {
-                        this.tab('Edit')
+                        this.activeTabIndex = 1
                         this.blog.title = res.data.title
                         this.blog.content = res.data.contentOrigin
                         this.blog.tags = res.data.tags
@@ -373,7 +361,7 @@
                     this.user = res.data.data
                     this.$cookies.set('token',res.data.data.token,"30D")
                     this.$cookies.set('userInfo',res.data.data,"30D")
-
+                    this.tab('Posted')
                 }).catch(() => {
                 }).finally(() => {
                     this.isLoading = false
@@ -392,6 +380,7 @@
                     this.user = res.data.data
                     this.$cookies.set('token',res.data.data.token,"30D")
                     this.$cookies.set('userInfo',res.data.data,"30D")
+                    this.tab('Posted')
                 }).catch(() => {
                     this.$buefy.notification.open({
                         message: 'log in failed！',
@@ -401,10 +390,11 @@
                     this.isLoading = false
                 })
             }
-            this.tab('User')
+
             this.$nextTick(() => {
                 this.loading = false
             })
+
         }
     }
 </script>

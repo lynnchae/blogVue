@@ -241,7 +241,7 @@
                 </div>
             </div>
             <div class="column is-one-third">
-                <div class="tile is-parent is-vertical ">
+                <div class="tile is-parent is-vertical is-fixed-top">
                     <div class="tile is-child box fadeInRight animated">
                         <b-field>
                             <b-input v-model="searchWord" placeholder="Search..." icon="search"
@@ -368,7 +368,8 @@
                 page: 1,
                 pageSize: 10,
                 lastId: null,
-                total: null
+                total: null,
+                pulling: false
             }
         },
         created() {
@@ -434,8 +435,8 @@
                 //变量scrollHeight是滚动条的总高度
                 const scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
                 //滚动条到底部的条件
-                if(scrollTop + windowHeight === scrollHeight && this.blogs.length < this.total){
-                    window.console.info('loadmore...')
+                if(scrollHeight - scrollTop - windowHeight < 30  && this.blogs.length < this.total && this.pulling === false){
+                    this.pulling = true
                     this.loadMore() // 加载的列表数据
                 }
             },
@@ -452,6 +453,7 @@
                 }).catch(error => {
                     window.console.info(error)
                 }).finally(() => {
+                    this.pulling = false
                     this.loading = false
                     if(this.blogs.length == 0){
                         this.nothingShow = true
